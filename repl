@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if ! [ -d `dirname $0`/slime ]; then
+    echo "You need to call 'rosmake roslisp_repl' first."
+    exit 1
+fi
+
+emacs -q -L `dirname $0` --eval "(require 'repl-config)"

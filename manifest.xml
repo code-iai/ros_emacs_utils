@@ -1,0 +1,16 @@
+<package>
+  <description brief="roslisp_repl is a script for launching up a roslisp REPL">
+
+    This package downloads and extracts SLIME and provides a script to
+    start up emacs with a roslisp slime REPL.
+
+  </description>
+  <author>Lorenz Moesenlechner</author>
+  <license>Public domain</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/roslisp_repl</url>
+  <depend package="rosemacs"/>
+
+</package>
+
+
