@@ -12,7 +12,7 @@ all: .slime .swank
 	touch .slime
 
 .swank: 
-	[ -f $(HOME)/.swank.lisp ] || cp $(PACKAGE_DIR)/swank.lisp $(HOME)/.swank.lisp
+	[ -f $(HOME)/.swank.lisp ] || cp swank.lisp $(HOME)/.swank.lisp
 	touch .swank
 	
 clean:
