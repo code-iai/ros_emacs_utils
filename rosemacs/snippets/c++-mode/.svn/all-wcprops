@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ros/!svn/ver/13764/stacks/ros/trunk/tools/rosemacs/snippets/c++-mode
+END
+roscpp.yasnippet
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/ros/!svn/ver/13490/stacks/ros/trunk/tools/rosemacs/snippets/c++-mode/roscpp.yasnippet
+END
+rosmain.yasnippet
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/ros/!svn/ver/13490/stacks/ros/trunk/tools/rosemacs/snippets/c++-mode/rosmain.yasnippet
+END
+rh.yasnippet
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/ros/!svn/ver/13490/stacks/ros/trunk/tools/rosemacs/snippets/c++-mode/rh.yasnippet
+END
+rostest.yasnippet
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/ros/!svn/ver/13764/stacks/ros/trunk/tools/rosemacs/snippets/c++-mode/rostest.yasnippet
+END
