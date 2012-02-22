@@ -1,0 +1,15 @@
+Source: rosemacs-el
+Section: devel
+Priority: optional
+Maintainer: Lorenz Moesenlechner <moesenle@in.tum.de>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.2
+Homepage: http://ros.org/wiki/rosemacs
+Vcs-Git: https://kforge.ros.org/rosemacs/git
+
+Package: rosemacs-el
+Architecture: all
+Depends: emacsen-common (>= 1.4.14)
+Description: rosemacs is an emacs plugin to interact with the ros ecosystem. It
+ provides functionality to open files in ros packages, to keep track of topics,
+ to start a roscore and much more.
