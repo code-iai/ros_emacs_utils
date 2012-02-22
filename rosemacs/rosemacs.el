@@ -1661,7 +1661,7 @@ The page delimiter in this buffer matches the start, so you can use forward/back
   ;; nxml mode
   (when (>= emacs-major-version 23)
     (require 'rng-loc)
-    (pushnew (concat (get-rosemacs-path) "/rng-schemas.xml") rng-schema-locating-files)
+    (pushnew (concat rosemacs/pathname "/rng-schemas.xml") rng-schema-locating-files)
     (add-to-list 'auto-mode-alist '("\.launch$" . nxml-mode))
     (add-to-list 'auto-mode-alist '("manifest.xml" . nxml-mode))
     (add-to-list 'auto-mode-alist '("\\.urdf" . xml-mode))
