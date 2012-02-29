@@ -979,10 +979,6 @@ parameter."
   (interactive)
   (interrupt-process))
 
-(defun rosemacs/terminate-process ()
-  (interactive)
-  (signal-process (get-buffer-process (current-buffer)) 'SIGTERM))
-
 (defun rosemacs/kill-process-buffer ()
   (interactive)
   (let ((process (get-buffer-process (current-buffer))))
@@ -1333,7 +1329,7 @@ q kills buffer"
       (match-string 1))))
 
 (defvar ros-run-keymap (make-sparse-keymap))
-(define-key ros-run-keymap "k" 'rosemacs/terminate-process)
+(define-key ros-run-keymap "k" 'rosemacs/interrupt-process)
 (define-key ros-run-keymap "q" 'rosemacs/kill-process-buffer)
 (define-key ros-run-keymap "r" 'rosrun/restart-current)
 (define-key ros-run-keymap "x" 'rosrun/kill-and-restart)
@@ -1434,7 +1430,7 @@ Prefix argument allows you to edit the rosrun command before executing it."
                                            (let ((buf (process-buffer proc)))
                                              (message "%s has terminated; restarting" ros-run-executable)
                                              (rosrun/restart (current-buffer)))))
-          (rosemacs/terminate-process))
+          (rosemacs/interrupt-process))
       (error "Buffer does not contain a running process"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
