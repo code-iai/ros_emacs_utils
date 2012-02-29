@@ -1,0 +1,3 @@
+rosemacs.el rosbag-view-mode.el slime-ros.el usr/share/emacs/site-lisp/rosemacs-el
+poll-rosnode poll-rostopic usr/share/emacs/site-lisp/rosemacs-el
+manifest.rnc roslaunch.rnc rng-schemas.xml usr/share/emacs/site-lisp/rosemacs-el
