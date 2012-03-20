@@ -1,0 +1,38 @@
+#! /bin/sh -e
+# /usr/lib/emacsen-common/packages/install/rosemacs-el
+
+# Written by Jim Van Zandt <jrv@vanzandt.mv.com>, borrowing heavily
+# from the install scripts for gettext by Santiago Vila
+# <sanvila@ctv.es> and octave by Dirk Eddelbuettel <edd@debian.org>.
+
+FLAVOR=$1
+PACKAGE=rosemacs-el
+if test "${FLAVOR}" = 'emacs' -o "$(echo ${FLAVOR} | cut -c-6)" = 'xemacs'; then
+    exit 0
+fi
+
+echo "install/${PACKAGE}: Handling install for emacsen flavor ${FLAVOR}"
+FLAGS="--no-site-file -q -batch -l path.el -f batch-byte-compile"
+ELDIR="/usr/share/emacs/site-lisp/${PACKAGE}"
+ELCDIR="/usr/share/${FLAVOR}/site-lisp/${PACKAGE}"
+install -m 755 -d "${ELCDIR}"
+cd "${ELDIR}"
+FILES="rosemacs.el rosbag-view-mode.el"
+# We cannot compile slime-ros here because it requires slime which we do not
+# want in our dependencies. We just link the file, but don't compile it.
+FILES_NO_COMPILE="slime-ros.el"
+cd ${ELCDIR}
+for i in ${FILES}; do
+    ln -fs "/usr/share/emacs/site-lisp/${PACKAGE}/${i}"
+done
+for i in ${FILES_NO_COMPILE}; do
+    ln -fs "/usr/share/emacs/site-lisp/${PACKAGE}/${i}"
+done
+
+cat << EOF > path.el
+(setq load-path (cons "." load-path) byte-compile-warnings nil)
+EOF
+"${FLAVOR}" ${FLAGS} ${FILES}
+rm -f path.el
+
+exit 0
