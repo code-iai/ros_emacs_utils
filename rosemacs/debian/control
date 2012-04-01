@@ -2,7 +2,7 @@ Source: rosemacs-el
 Section: devel
 Priority: optional
 Maintainer: Lorenz Moesenlechner <moesenle@in.tum.de>
-Build-Depends: debhelper (>= 8.0.0)
+Build-Depends: debhelper (>= 7.0.0)
 Standards-Version: 3.9.2
 Homepage: http://ros.org/wiki/rosemacs
 Vcs-Git: https://kforge.ros.org/rosemacs/git
