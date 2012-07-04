@@ -1,5 +1,5 @@
 
-ARCHIVE="slime-20110729.tar.bz2"
+ARCHIVE="slime-20120704.tar.bz2"
 ARCHIVE_URL="http://code.in.tum.de/files/$(ARCHIVE)"
 
 all: .slime
