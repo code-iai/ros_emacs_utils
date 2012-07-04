@@ -10,6 +10,7 @@
 (add-to-list 'load-path (ros-package-path "rosemacs"))
 (add-to-list 'load-path (concat (ros-package-path "roslisp_repl") "/slime"))
 
+(customize-set-variable 'indent-tabs-mode nil)
 (setq default-tab-width 2)
 (global-font-lock-mode t)
 (setq query-replace-highlight t)
