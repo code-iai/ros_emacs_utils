@@ -1,8 +1,11 @@
 #!/bin/bash
 
-if ! [ -d `dirname $0`/slime ]; then
+ROSLISP_REPL_DIR=$(dirname $0)
+
+if ! [ -d ${ROSLISP_REPL_DIR}/slime ]; then
     echo "You need to call 'rosmake roslisp_repl' first."
     exit 1
 fi
 
-emacs -q -L `dirname $0` --eval "(require 'repl-config)"
+[ -f ${HOME}/.swank.lisp ] || cp ${ROSLISP_REPL_DIR}/swank.lisp ${HOME}/.swank.lisp
+emacs -q -L ${ROSLISP_REPL_DIR} --eval "(require 'repl-config)"
