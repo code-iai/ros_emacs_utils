@@ -1,0 +1,11 @@
+<package>
+  <name>slime</name>
+  <version>0.0.1</version>
+  <description>
+    Wrapper package for the Superior Lisp Interaction Mode (Slime).
+  </description>
+  <maintainer email="moesenle@in.tum.de">Lorenz Moesenlechner</maintainer>
+  <license>Public domain</license>
+
+  <build_depend>catkin</build_depend>
+</package>

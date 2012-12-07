@@ -7,8 +7,7 @@
       (re-search-forward "^\\(.*\\)$")
       (match-string 1))))
 
-(add-to-list 'load-path (ros-package-path "rosemacs"))
-(add-to-list 'load-path (concat (ros-package-path "roslisp_repl") "/slime"))
+(add-to-list 'load-path (ros-package-path "slime"))
 
 (customize-set-variable 'indent-tabs-mode nil)
 (setq default-tab-width 2)
