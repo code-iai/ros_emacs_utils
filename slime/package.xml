@@ -7,5 +7,5 @@
   <maintainer email="moesenle@in.tum.de">Lorenz Moesenlechner</maintainer>
   <license>Public domain</license>
 
-  <build_depend>catkin</build_depend>
+  <buildtool_depend>catkin</buildtool_depend>
 </package>
