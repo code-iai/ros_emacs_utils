@@ -1,7 +1,6 @@
 #!/bin/bash
 
 ROSLISP_REPL_DIR=$(rospack find roslisp_repl)
-SLIME_DIR=$(rospack find slime)
 
 [ -f ${HOME}/.swank.lisp ] || cp ${ROSLISP_REPL_DIR}/swank.lisp ${HOME}/.swank.lisp
 emacs -q -L ${ROSLISP_REPL_DIR} --eval "(require 'repl-config)"
