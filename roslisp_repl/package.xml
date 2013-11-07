@@ -14,5 +14,5 @@
   <run_depend>slime</run_depend>
   <run_depend>sbcl</run_depend>
   <run_depend>roslisp</run_depend>
-  <run_depend>emacs</run_depend>
+  <run_depend>rosemacs-el</run_depend>
 </package>
