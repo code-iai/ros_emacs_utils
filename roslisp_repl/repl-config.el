@@ -7,8 +7,6 @@
       (re-search-forward "^\\(.*\\)$")
       (match-string 1))))
 
-(add-to-list 'load-path (ros-package-path "slime"))
-
 (customize-set-variable 'indent-tabs-mode nil)
 (setq default-tab-width 2)
 (global-font-lock-mode t)
@@ -33,10 +31,6 @@
 (require 'rosemacs)
 (invoke-rosemacs)
 (global-set-key "\C-x\C-r" ros-keymap)
-
-;; We need to fix the swank path in case someone instaled swank-cl and
-;; didn't purge it again.
-(setq slime-backend "swank-loader.lisp")
 
 (slime-setup '(slime-fancy slime-asdf slime-indentation slime-ros))
 (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)

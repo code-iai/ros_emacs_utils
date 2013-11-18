@@ -10,7 +10,7 @@
   <author>Lorenz Moesenlechner</author>
   <license>Public domain</license>
 
-  <build_depend>catkin</build_depend>
+  <buildtool_depend>catkin</buildtool_depend>
   <run_depend>slime</run_depend>
   <run_depend>sbcl</run_depend>
   <run_depend>roslisp</run_depend>
