@@ -1,5 +1,12 @@
 
-(require 'slime-asdf)
+(define-slime-contrib slime-ros
+	"Extension of slime for utilizing rosemacs features"
+	(:authors "ROS Community")
+	(:license "BSD")
+	(:slime-dependencies slime-asdf)
+	(:swank-dependencies swank-ros)
+	(:on-load (add-hook 'slime-connected-hook 'slime-ros-load-manifest)))
+
 (require 'rosemacs)
 
 (defcustom slime-ros-completion-function 'completing-read
@@ -10,6 +17,14 @@
   :group 'rosemacs)
 
 (defvar slime-ros-package-history nil)
+
+(defun slime-ros-load-manifest ()
+	(let ((roslisp-path (ros-package-dir "roslisp")))
+		(when roslisp-path
+				(slime-eval-async `(swank-ros:load-ros-manifest ,roslisp-path)
+					;; (lambda (result)
+					;; 	(when result (message "Successfully loaded :ros-load-manifest")))
+					))))
 
 (defun slime-ros-read-pkg-name (&optional prompt default-value)
   (cond ((not (slime-current-connection))
@@ -53,21 +68,5 @@
                      (system-name (slime-ros-get-systems-in-pkg ros-pkg-name ros-pkg-name)))
                 (slime-eval `(cl:setf ros-load:*current-ros-package* ,ros-pkg-name))
                 (slime-oos system-name 'test-op)))))
-
-(defun slime-ros ()
-  (interactive)
-  (let* ((sbcl-pkg-path (ros-package-dir "sbcl"))
-         (roslisp-path (ros-package-dir "roslisp"))
-         (sbcl-binary (if sbcl-pkg-path
-                          (concat sbcl-pkg-path "/scripts/run-sbcl.sh")
-                          "/usr/bin/sbcl"))
-         (inferior-lisp-program (concat sbcl-binary " --load " roslisp-path
-                                        "/scripts/roslisp-sbcl-init"))
-
-         ;; Override user's implementations if set
-         (slime-lisp-implementations nil))
-    (message "Starting sbcl version from %s" sbcl-binary)
-
-    (slime)))
 
 (provide 'slime-ros)
