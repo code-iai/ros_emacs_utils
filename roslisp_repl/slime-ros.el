@@ -38,7 +38,8 @@
 
 (defun slime-ros-get-systems-in-pkg (package &optional default-value prompt)
   (let* ((package-path (ros-package-path package))
-         (asd-files (ros-files-in-package package-path "asd" "asdf"))
+         (asd-files (append (ros-files-in-package package-path "asd" "asdf")
+                            (ros-files-in-package package-path "asd" ".")))
          (default2 (slime-ros-replace-underscores default-value))
          (default (cond ((member default-value asd-files) default-value)
                         ((member default2 asd-files) default2)))
