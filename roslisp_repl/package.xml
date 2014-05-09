@@ -12,7 +12,8 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <run_depend>slime</run_depend>
+  <run_depend>slime_ros</run_depend>
   <run_depend>sbcl</run_depend>
   <run_depend>roslisp</run_depend>
-  <run_depend>rosemacs-el</run_depend>
+  <run_depend>rosemacs</run_depend>
 </package>
