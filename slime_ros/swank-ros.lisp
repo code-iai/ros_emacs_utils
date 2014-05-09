@@ -23,6 +23,6 @@
 																								 "/load-manifest/"))))
 			(push load-manifest-directory asdf:*central-registry*)))
 	(asdf:operate 'asdf:load-op :ros-load-manifest)
-	(format t "[swank-ros] Successfully loaded the :ros-load-manifest system~%"))
+	(format t "[swank-ros] Successfully loaded the :ros-load-manifest system~%~%"))
 
 (provide :swank-ros)

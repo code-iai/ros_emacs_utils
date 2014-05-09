@@ -32,9 +32,8 @@
 	(let ((roslisp-path (ros-package-dir "roslisp")))
 		(when roslisp-path
 				(slime-eval-async `(swank-ros:load-ros-manifest ,roslisp-path)
-					;; (lambda (result)
-					;; 	(when result (message "Successfully loaded :ros-load-manifest")))
-					))))
+					(lambda (result)
+            (message "Successfully loaded ros-load-manifest."))))))
 
 (defun slime-ros-read-pkg-name (&optional prompt default-value)
   (cond ((not (slime-current-connection))
