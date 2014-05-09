@@ -1,3 +1,4 @@
+(require 'slime)
 
 (define-slime-contrib slime-ros
 	"Extension of slime for utilizing rosemacs features"
@@ -7,6 +8,15 @@
 	(:swank-dependencies swank-ros)
 	(:on-load (add-hook 'slime-connected-hook 'slime-ros-load-manifest)))
 
+(defun ros-package-path (pkg)
+  (save-excursion
+    (with-temp-buffer
+      (call-process "rospack" nil t nil "find" pkg)
+      (goto-char (point-min))
+      (re-search-forward "^\\(.*\\)$")
+      (match-string 1))))
+
+(add-to-list 'load-path (ros-package-path "rosemacs"))
 (require 'rosemacs)
 
 (defcustom slime-ros-completion-function 'completing-read

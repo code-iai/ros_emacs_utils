@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package>
+  <name>slime_ros</name>
+  <version>0.0.0</version>
+  <description>Extensions for slime to assist in working with ROS packages</description>
+  <maintainer email="kazhoyan@cs.uni-bremen.de">Gayane Kazhoyan</maintainer>
+
+  <license>Public Domain</license>
+
+  <!-- <url type="website">http://ros.org/wiki/slime_ros</url> -->
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <run_depend>rosemacs</run_depend>
+  <run_depend>slime</run_depend>
+  <run_depend>sbcl</run_depend>
+  <run_depend>roslisp</run_depend>
+</package>
