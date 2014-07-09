@@ -1,8 +1,0 @@
-build-stamp
-install-stamp
-debian/files
-debian/rosemacs-el.debhelper.log
-debian/rosemacs-el.postinst.debhelper
-debian/rosemacs-el.prerm.debhelper
-debian/rosemacs-el.substvars
-debian/rosemacs-el
