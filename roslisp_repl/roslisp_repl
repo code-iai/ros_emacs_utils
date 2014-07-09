@@ -3,4 +3,6 @@
 ROSLISP_REPL_DIR=$(rospack find roslisp_repl)
 
 [ -f ${HOME}/.swank.lisp ] || cp ${ROSLISP_REPL_DIR}/swank.lisp ${HOME}/.swank.lisp
+[ -f ${HOME}/.sbclrc ] || cp ${ROSLISP_REPL_DIR}/sbclrc ${HOME}/.sbclrc
+
 emacs -q -L ${ROSLISP_REPL_DIR} --eval "(require 'repl-config)"

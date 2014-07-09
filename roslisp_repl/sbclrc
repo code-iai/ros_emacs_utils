@@ -1,0 +1,6 @@
+
+;;; asdf source registry entries
+(require 'asdf)
+(pushnew (format nil "/opt/ros/~a/share/emacs/common-lisp/"
+                 (string-downcase (sb-unix::posix-getenv "ROS_DISTRO")))
+         asdf:*central-registry* :test #'equal)

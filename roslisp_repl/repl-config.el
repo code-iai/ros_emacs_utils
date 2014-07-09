@@ -22,15 +22,9 @@
 
 ;; rosemacs
 
-(defun ros-package-path (pkg)
-  (save-excursion
-    (with-temp-buffer
-      (call-process "rospack" nil t nil "find" pkg)
-      (goto-char (point-min))
-      (re-search-forward "^\\(.*\\)$")
-      (match-string 1))))
+(add-to-list 'load-path (format "/opt/ros/%s/share/emacs/site-lisp"
+                                (getenv "ROS_DISTRO")))
 
-(add-to-list 'load-path (ros-package-path "rosemacs"))
 (require 'rosemacs)
 
 (invoke-rosemacs)
@@ -49,7 +43,6 @@
 (setq inferior-lisp-program "/usr/bin/sbcl --dynamic-space-size 4096")
 (setq slime-lisp-implementations nil)
 
-(add-to-list 'load-path (ros-package-path "slime_ros"))
 (setq slime-contribs '(slime-repl
                        slime-autodoc
                        ;; slime-c-p-c
