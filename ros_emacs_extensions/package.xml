@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package>
+  <name>ros_emacs_extensions</name>
+  <version>0.0.1</version>
+  <description>
+    A metapackage of Emacs extensions for ROS.
+    Only there for simplifying the release process.
+  </description>
+
+  <maintainer email="kazhoyan@cs.uni-bremen.de">Gayane Kazhoyan</maintainer>
+  <author email="kazhoyan@cs.uni-bremen.de">Gayane Kazhoyan</author>
+  <license>BSD</license>
+  <url type="website">http://github.com/gaya-/ros_emacs_extensions</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <run_depend>rosemacs</run_depend>
+  <run_depend>roslisp_repl</run_depend>
+  <run_depend>slime_ros</run_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+</package>
