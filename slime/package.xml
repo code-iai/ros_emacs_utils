@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package>
+  <name>slime</name>
+  <version>0.0.0</version>
+  <description>ROS wrapper for slime</description>
+
+  <maintainer email="kazhoyan@cs.uni-bremen.de">Gayane Kazhoyan</maintainer>
+
+  <license>Public domain</license>
+
+  <url type="website">http://common-lisp.net/project/slime</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+</package>
