@@ -5,6 +5,10 @@ project(roslisp_repl)
 find_package(catkin REQUIRED)
 catkin_package()
 
+#############
+## Install ##
+#############
+
 install(FILES swank.lisp sbclrc repl-config.el
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 

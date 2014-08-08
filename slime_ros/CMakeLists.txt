@@ -9,7 +9,6 @@ catkin_package()
 ## Install ##
 #############
 
-## Mark other files for installation (e.g. launch and bag files, etc.)
 install(FILES slime-ros.el
   DESTINATION share/emacs/site-lisp)
 
