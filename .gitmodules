@@ -1,0 +1,3 @@
+[submodule "slime/src"]
+	path = slime/src
+	url = https://github.com/slime/slime
