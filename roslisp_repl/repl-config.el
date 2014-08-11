@@ -22,8 +22,16 @@
 
 ;; rosemacs
 
-(add-to-list 'load-path (format "/opt/ros/%s/share/emacs/site-lisp"
-                                (getenv "ROS_DISTRO")))
+(let ((base (format "/opt/ros/%s/share/emacs/site-lisp"
+                    (getenv "ROS_DISTRO"))))
+  (when (file-directory-p base)
+    (add-to-list 'load-path base)
+    (dolist (f (directory-files base))
+      (let ((name (concat base "/" f)))
+        (when (and (file-directory-p name) 
+                   (not (equal f ".."))
+                   (not (equal f ".")))
+          (add-to-list 'load-path name))))))
 
 (require 'rosemacs)
 
@@ -32,9 +40,6 @@
 (setq ros-completion-function (quote ido-completing-read))
 
 ;; slime
-
-;; the following will go away, it's just needed for from source emacs installs
-(add-to-list 'load-path "~/workspace/lisp/slime")
 
 (require 'slime-autoloads)
 (setq slime-backend "swank-loader.lisp")
