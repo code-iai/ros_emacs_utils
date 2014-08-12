@@ -15,16 +15,18 @@ file(GLOB SLIME_ASD_FILES "src/*.asd")
 file(GLOB SLIME_CONTRIB_LISP_FILES "src/contrib/*.lisp")
 
 install(FILES ${SLIME_EL_FILES}
-  DESTINATION share/emacs/site-lisp/slime)
+  DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/emacs/site-lisp/slime)
 install(FILES ${SLIME_CONTRIB_EL_FILES}
-  DESTINATION share/emacs/site-lisp/slime/contrib)
+  DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/emacs/site-lisp/slime/contrib)
 install(FILES ${SLIME_LIB_EL_FILES}
-  DESTINATION share/emacs/site-lisp/slime/lib)
+  DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/emacs/site-lisp/slime/lib)
 install(FILES ${SLIME_LISP_FILES}
-  DESTINATION share/common-lisp/source/slime)
+  DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/common-lisp/source/slime)
 install(FILES ${SLIME_ASD_FILES}
-  DESTINATION share/common-lisp/source/slime)
+  DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/common-lisp/source/slime)
 install(FILES ${SLIME_CONTRIB_LISP_FILES}
-  DESTINATION share/common-lisp/source/slime/contrib)
-install(FILES src/ChangeLog DESTINATION share/emacs/site-lisp/slime)
-install(FILES src/ChangeLog DESTINATION share/common-lisp/source/slime)
+  DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/common-lisp/source/slime/contrib)
+install(FILES src/ChangeLog
+  DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/emacs/site-lisp/slime)
+install(FILES src/ChangeLog
+  DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/common-lisp/source/slime)

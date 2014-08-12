@@ -10,13 +10,13 @@ catkin_package()
 #############
 
 install(FILES rosemacs.el rosbag-view-mode.el
-  DESTINATION share/emacs/site-lisp)
+  DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/emacs/site-lisp)
 
 install(PROGRAMS poll-rosnode poll-rostopic
-  DESTINATION share/emacs/site-lisp)
+  DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/emacs/site-lisp)
 
 install(FILES manifest.rnc roslaunch.rnc rng-schemas.xml
-  DESTINATION share/emacs/site-lisp)
+  DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/emacs/site-lisp)
 
 # hmm, snippets should go into the home... but where exactly?... .emacs.d?...
 # foreach(subdir

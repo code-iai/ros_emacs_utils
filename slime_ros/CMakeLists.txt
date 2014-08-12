@@ -10,7 +10,7 @@ catkin_package()
 #############
 
 install(FILES slime-ros.el
-  DESTINATION share/emacs/site-lisp/slime/contrib)
+  DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/emacs/site-lisp/slime/contrib)
 
 install(FILES swank-ros.asd swank-ros.lisp
-  DESTINATION share/common-lisp/source)
+  DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/common-lisp/source)
