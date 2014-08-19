@@ -45,8 +45,8 @@ but also install them (```catkin_make install```).
 Why is that so?
 
 All the packages have their Emacs Lisp part contained in a single or multiple ```*.el``` files.
-During installation of the packages those files are being copied into
-```YOUR_INSTALL_DIR/share/emacs/site-lisp```. Therefore, you need to tell Emacs
+During installation of the packages those files are being copied
+into ```YOUR_INSTALL_DIR/share/emacs/site-lisp```. Therefore, you need to tell Emacs
 in the initialization script to add that directory to the Emacs ```load-path```
 in a recursive way. That is done in ```repl-config.el```.
 
