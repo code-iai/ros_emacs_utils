@@ -1,11 +1,13 @@
 <package>
   <name>rosemacs</name>
-  <version>0.2.0</version>
-  <description>Ros tools for those who live in emacs.</description>
-  <url>http://www.ros.org/wiki/rosemacs</url>
+  <version>0.4.0</version>
+  <description>ROS tools for those who live in Emacs.</description>
+
   <author>Bhaskara Marthi</author>
   <maintainer email="kazhoyan@cs.uni-bremen.de">Gayane Kazhoyan</maintainer>
   <license>BSD</license>
+  <url type="website">http://www.ros.org/wiki/rosemacs</url>
+  <url type="repository">https://github.com/code-iai/ros_emacs_extensions</url>
 
   <buildtool_depend>catkin</buildtool_depend>
   <run_depend>emacs</run_depend>

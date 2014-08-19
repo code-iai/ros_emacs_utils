@@ -1,14 +1,13 @@
 <?xml version="1.0"?>
 <package>
   <name>slime_wrapper</name>
-  <version>0.0.0</version>
+  <version>0.4.0</version>
   <description>ROS wrapper for slime</description>
 
   <maintainer email="kazhoyan@cs.uni-bremen.de">Gayane Kazhoyan</maintainer>
-
   <license>Public domain</license>
-
   <url type="website">http://common-lisp.net/project/slime</url>
+  <url type="repository">https://github.com/code-iai/ros_emacs_extensions</url>
 
   <buildtool_depend>catkin</buildtool_depend>
 </package>

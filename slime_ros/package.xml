@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <package>
   <name>slime_ros</name>
-  <version>0.0.0</version>
+  <version>0.4.0</version>
   <description>Extensions for slime to assist in working with ROS packages</description>
+
   <maintainer email="kazhoyan@cs.uni-bremen.de">Gayane Kazhoyan</maintainer>
   <author>Bhaskara Marthi</author>
   <license>Public Domain</license>
-
-  <!-- <url type="website">http://ros.org/wiki/slime_ros</url> -->
+  <url type="repository">https://github.com/code-iai/ros_emacs_extensions</url>
 
   <buildtool_depend>catkin</buildtool_depend>
   <run_depend>rosemacs</run_depend>
