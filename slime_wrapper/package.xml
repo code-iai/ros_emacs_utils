@@ -10,4 +10,5 @@
   <url type="repository">https://github.com/code-iai/ros_emacs_extensions</url>
 
   <buildtool_depend>catkin</buildtool_depend>
+  <run_depend>emacs</run_depend>
 </package>
