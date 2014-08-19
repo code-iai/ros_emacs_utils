@@ -3,7 +3,7 @@ ros_emacs_extensions
 
 This is a collection of packages to work on ROS-based software from Emacs.
 
-It has a ```rosemacs``` pacakge, which contains functions for starting a roscore,
+It has a ```rosemacs``` package, which contains functions for starting a roscore,
 monitoring ROS nodes etc (with corresponding Emacs key bindings).
 And, in addition to that, it has a number of packages to simplify
 development of roslisp-based packages. Among them is
@@ -33,7 +33,8 @@ Make sure to update ```DISTRO``` in the path.
 
 If you work with roslisp, all you need to do is to start ```roslisp_repl``` in the terminal.
 If you want to start the REPL from inside of your Emacs process, copy the configuration
-from the ```repl-config.el``` into your Emacs init script. It can be found in your ```roslisp_repl``` ROS package.
+from the ```repl-config.el``` into your Emacs init script.
+It can be found in your ```roslisp_repl``` ROS package.
 
 ### For developers
 
@@ -41,16 +42,21 @@ There is a number of things to take into account when compiling ros_emacs_extens
 In order for the code to work you not only need to run ```catkin_make``` on the packages,
 but also install them (```catkin_make install```).
 
+Why is that so?
+
 All the packages have their Emacs Lisp part contained in a single or multiple ```*.el``` files.
 During installation of the packages those files are being copied into
-```YOUR_INSTALL_DIR/share/emacs/site-lisp```. Therefore, you need to tell Emacs in the initialization
-script to add that directory to the Emacs ```load-path``` in a recursive way. That is done in ```repl-config.el```.
+```YOUR_INSTALL_DIR/share/emacs/site-lisp```. Therefore, you need to tell Emacs
+in the initialization script to add that directory to the Emacs ```load-path```
+in a recursive way. That is done in ```repl-config.el```.
 
-In addition to the Emacs Lisp part, all the packages except ```rosemacs``` have a Common Lisp part,
-and all the ```*.lisp``` files are being copied into ```YOUR_INSTALL_DIR/share/common-lisp/source```,
+In addition to the Emacs Lisp part, all the packages except ```rosemacs```
+have a Common Lisp part, and all the ```*.lisp``` files are being copied into
+```YOUR_INSTALL_DIR/share/common-lisp/source```,
 this replicates the Debian approach to installing Emacs Lisp and Common Lisp files.
-Therefore, you need to tell your Common Lisp compiler, actually linker, i.e. ASDF, to search for systems
-in that directory. That is done in ```.sbclrc```. As you can see, right now only SBCL is supported.
+Therefore, you need to tell your Common Lisp compiler, actually linker, i.e. ASDF,
+to search for systems in that directory. That is done in ```.sbclrc```.
+As you can see, right now only SBCL is supported.
 The original file can be found in your ```roslisp_repl``` ROS package under the name ```sbclrc```.
 When starting the ```roslisp_repl``` executive, this file is being copied into the home directory,
 unless it already exists there. Check the ```roslisp_repl``` executive for more info.
@@ -69,8 +75,8 @@ For non-Lisp developers things should be quite portable.
 
 * Q: Why doesn't my ```roslisp_repl``` start properly / find ```rosemacs```?
 * A: Probably because you didn't install the ```ros_emacs_extensions``` packages,
-e.g. ```catkin_make install``` them. Just follow the directions in the error pop up winodw (or echo buffer)
-of your Emacs.
+e.g. ```catkin_make install``` them.
+Just follow the directions in the error pop up winodw (or echo buffer) of your Emacs.
 
 
 * Q: I installed the packages. Why doesn't it still work?
