@@ -51,8 +51,8 @@ in the initialization script to add that directory to the Emacs ```load-path```
 in a recursive way. That is done in ```repl-config.el```.
 
 In addition to the Emacs Lisp part, all the packages except ```rosemacs```
-have a Common Lisp part, and all the ```*.lisp``` files are being copied into
-```YOUR_INSTALL_DIR/share/common-lisp/source```,
+have a Common Lisp part, and all the ```*.lisp``` files are being copied
+into ```YOUR_INSTALL_DIR/share/common-lisp/source```,
 this replicates the Debian approach to installing Emacs Lisp and Common Lisp files.
 Therefore, you need to tell your Common Lisp compiler, actually linker, i.e. ASDF,
 to search for systems in that directory. That is done in ```.sbclrc```.
