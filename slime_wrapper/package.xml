@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>slime</name>
+  <name>slime_wrapper</name>
   <version>0.0.0</version>
   <description>ROS wrapper for slime</description>
 

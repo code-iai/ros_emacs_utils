@@ -8,13 +8,13 @@
   </description>
 
   <maintainer email="kazhoyan@cs.uni-bremen.de">Gayane Kazhoyan</maintainer>
-  <author email="kazhoyan@cs.uni-bremen.de">Gayane Kazhoyan</author>
   <license>BSD</license>
   <url type="website">http://github.com/gaya-/ros_emacs_extensions</url>
 
   <buildtool_depend>catkin</buildtool_depend>
   <run_depend>rosemacs</run_depend>
   <run_depend>roslisp_repl</run_depend>
+  <run_depend>slime_wrapper</run_depend>
   <run_depend>slime_ros</run_depend>
 
   <export>
