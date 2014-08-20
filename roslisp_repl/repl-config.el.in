@@ -22,15 +22,15 @@
 
 ;; rosemacs
 
-(let ((base "${CMAKE_INSTALL_PREFIX}/share/emacs/site-lisp"))
-  (cond ((file-directory-p base)
-         (add-to-list 'load-path base)
-         (dolist (f (directory-files base))
-           (let ((name (concat base "/" f)))
-             (when (and (file-directory-p name)
-                        (not (equal f ".."))
-                        (not (equal f ".")))
-               (add-to-list 'load-path name)))))
+(let ((default-directory "${CMAKE_INSTALL_PREFIX}/share/emacs/site-lisp"))
+  (cond ((file-directory-p default-directory)
+         (setq load-path
+               (append
+                (let ((load-path (copy-sequence load-path))) ;; Shadow
+                  (append
+                   (copy-sequence (normal-top-level-add-to-load-path '(".")))
+                   (normal-top-level-add-subdirs-to-load-path)))
+               load-path)))
         (t
          (message-box "Can't find the .el files!
 Did you forget to install the ros_emacs_extensions packages?
