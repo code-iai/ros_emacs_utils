@@ -28,6 +28,7 @@ where ```PATH_TO_ROSLISP_REPL``` is what ```rospack find roslisp_repl``` gives y
 ### For users
 
 If you work with roslisp, all you need to do is to start ```roslisp_repl``` in the terminal.
+
 If you want to start the REPL from inside of your Emacs process, add the following to your Emacs init script:
 
 ```lisp
@@ -35,6 +36,11 @@ If you want to start the REPL from inside of your Emacs process, add the followi
 (require 'slime-config)
 ```
 where ```PATH_TO_ROSLISP_REPL``` is what ```rospack find roslisp_repl``` gives you.
+It is important to have run ```./roslisp_repl``` at least once before you're able to start things from Emacs,
+as ```roslisp_repl```, besides starting configured Emacs for you,
+also creates ```.swank.lisp``` and ```.sbclrc``` in your home directory.
+If you already have them there, backup / delete them first,
+they are not being overwritten by default for safety reasons.
 
 ### For developers
 
@@ -62,8 +68,8 @@ Therefore, you need to tell your Common Lisp compiler, actually linker, i.e. ASD
 to search for systems in that directory. That is done in ```.sbclrc```.
 As you can see, right now only SBCL is supported.
 The original file can be found in your ```roslisp_repl``` ROS package under the name ```sbclrc```.
-When starting the ```roslisp_repl``` executive, this file is being copied into the home directory,
-unless it already exists there. Check the ```roslisp_repl``` executive for more info.
+When starting the ```roslisp_repl``` executable, this file is being copied into the home directory,
+unless it already exists there. Check the ```roslisp_repl``` executable for more info.
 
 ### System requirements
 
