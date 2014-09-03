@@ -10,7 +10,7 @@
   <maintainer email="kazhoyan@cs.uni-bremen.de">Gayane Kazhoyan</maintainer>
   <author>Lorenz Moesenlechner</author>
   <license>Public domain</license>
-  <url type="repository">https://github.com/code-iai/ros_emacs_extensions</url>
+  <url type="repository">https://github.com/code-iai/ros_emacs_utils</url>
 
   <buildtool_depend>catkin</buildtool_depend>
   <run_depend>slime_wrapper</run_depend>

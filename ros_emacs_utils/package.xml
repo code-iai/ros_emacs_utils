@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <package>
-  <name>ros_emacs_extensions</name>
+  <name>ros_emacs_utils</name>
   <version>0.4.0</version>
   <description>
-    A metapackage of Emacs extensions for ROS.
+    A metapackage of Emacs utils for ROS.
     Only there for simplifying the release process.
   </description>
 
   <maintainer email="kazhoyan@cs.uni-bremen.de">Gayane Kazhoyan</maintainer>
   <license>BSD</license>
-  <url type="repository">http://github.com/code-iai/ros_emacs_extensions</url>
+  <url type="repository">http://github.com/code-iai/ros_emacs_utils</url>
 
   <buildtool_depend>catkin</buildtool_depend>
   <run_depend>rosemacs</run_depend>

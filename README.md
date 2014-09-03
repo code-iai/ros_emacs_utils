@@ -1,4 +1,4 @@
-ros_emacs_extensions
+ros_emacs_utils
 ====================
 
 This is a collection of packages to work on ROS-based software from Emacs.
@@ -38,7 +38,7 @@ It can be found in your ```roslisp_repl``` ROS package.
 
 ### For developers
 
-There is a number of things to take into account when compiling ros_emacs_extensions from source.
+There is a number of things to take into account when compiling ros_emacs_utils from source.
 In order for the code to work you not only need to run ```catkin_make``` on the packages,
 but also install them (```catkin_make install```).
 
@@ -74,7 +74,7 @@ For non-Lisp developers things should be quite portable.
 ### FAQ
 
 * Q: Why doesn't my ```roslisp_repl``` start properly / find ```rosemacs```?
-* A: Probably because you didn't install the ```ros_emacs_extensions``` packages,
+* A: Probably because you didn't install the ```ros_emacs_utils``` packages,
 e.g. ```catkin_make install``` them.
 Just follow the directions in the error pop up winodw (or echo buffer) of your Emacs.
 

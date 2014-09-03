@@ -33,7 +33,7 @@
                load-path)))
         (t
          (message-box "Can't find the .el files!
-Did you forget to install the ros_emacs_extensions packages?
+Did you forget to install the ros_emacs_utils packages?
 If so, run \"catkin_make install\" in your catkin workspace
 or, if you prefer to only install the specific package,
 run \"catkin_make install --pkg PACKAGE\" where PACKAGE is

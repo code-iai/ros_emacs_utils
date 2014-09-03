@@ -7,7 +7,7 @@
   <maintainer email="kazhoyan@cs.uni-bremen.de">Gayane Kazhoyan</maintainer>
   <author>Bhaskara Marthi</author>
   <license>Public Domain</license>
-  <url type="repository">https://github.com/code-iai/ros_emacs_extensions</url>
+  <url type="repository">https://github.com/code-iai/ros_emacs_utils</url>
 
   <buildtool_depend>catkin</buildtool_depend>
   <run_depend>rosemacs</run_depend>
