@@ -1,3 +1,2 @@
-repl-config.el
+rosemacs-config.el
 sbclrc
-swank.lisp

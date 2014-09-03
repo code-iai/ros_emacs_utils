@@ -22,7 +22,7 @@
 
 ;; rosemacs
 
-(let ((default-directory "${CMAKE_INSTALL_PREFIX}/share/emacs/site-lisp"))
+(let ((default-directory "/home/gkazhoya/workspace/catkin/install/share/emacs/site-lisp"))
   (cond ((file-directory-p default-directory)
          (setq load-path
                (append
