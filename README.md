@@ -18,31 +18,35 @@ If you don't work with Lisp and just use Emacs for C++ or Python or Java or what
 you just need to add the following lines to your Emacs initialization file (init.el or similar):
 
 ```lisp
-(add-to-list 'load-path "/opt/ros/DISTRO/share/emacs/site-lisp")
-(require 'rosemacs)
-(invoke-rosemacs)
-(global-set-key "\C-x\C-r" ros-keymap)
-(setq ros-completion-function (quote ido-completing-read))
+(add-to-list 'load-path "PATH_TO_ROSLISP_REPL")
+(require 'rosemacs-config)
 ```
-
-Make sure to update ```DISTRO``` in the path.
+where ```PATH_TO_ROSLISP_REPL``` is what ```rospack find roslisp_repl``` gives you.
 
 ## Lisp programmer
 
 ### For users
 
 If you work with roslisp, all you need to do is to start ```roslisp_repl``` in the terminal.
-If you want to start the REPL from inside of your Emacs process, copy the configuration
-from the ```repl-config.el``` into your Emacs init script.
-It can be found in your ```roslisp_repl``` ROS package.
+If you want to start the REPL from inside of your Emacs process, add the following to your Emacs init script:
+
+```lisp
+(add-to-list 'load-path "PATH_TO_ROSLISP_REPL")
+(require 'slime-config)
+```
+where ```PATH_TO_ROSLISP_REPL``` is what ```rospack find roslisp_repl``` gives you.
 
 ### For developers
 
-There is a number of things to take into account when compiling ros_emacs_utils from source.
-In order for the code to work you not only need to run ```catkin_make``` on the packages,
-but also install them (```catkin_make install```).
+There is a number of things to take into account when compiling ros_emacs_utils from source:
+* This repo has Slime as a git submodule.
+  So, if you clone it into your workspace with ```git clone```, make sure to [update the submodule]
+  (http://git-scm.com/book/en/Git-Tools-Submodules#Cloning-a-Project-with-Submodules) as well.
+  But better just use ```wstool```, it knows how to deal with submodules.
+* Also, in order for the code to work you not only need to run ```catkin_make``` on the packages,
+  but also install them (```catkin_make install```).
 
-Why is that so?
+Why do we need to ```catkin_make install```? (Skip the next two paragraphs if you don't care.)
 
 All the packages have their Emacs Lisp part contained in a single or multiple ```*.el``` files.
 During installation of the packages those files are being copied
