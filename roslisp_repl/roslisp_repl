@@ -1,11 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env sh
+
+SLIME_ROS_DIR=$(rospack find slime_ros)
+${SLIME_ROS_DIR}/slime_ros_init
 
 ROSLISP_REPL_DIR=$(rospack find roslisp_repl)
-
-[ -f ${HOME}/.swank.lisp ] ||
-cp ${ROSLISP_REPL_DIR}/swank.lisp ${HOME}/.swank.lisp
-
-[ -f ${HOME}/.sbclrc ] ||
-cp ${ROSLISP_REPL_DIR}/sbclrc ${HOME}/.sbclrc
-
-emacs -q -L ${ROSLISP_REPL_DIR} --eval "(require 'repl-config)"
+emacs -q -L ${ROSLISP_REPL_DIR} -L ${SLIME_ROS_DIR} --eval "(require 'repl-config)"
