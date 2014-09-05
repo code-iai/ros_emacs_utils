@@ -1,4 +1,7 @@
 
+(when (< emacs-major-version 24)
+  (error "ERROR! (slime-config.el): Emacs versions smaller than 24 are not supported by the current implementation of Slime. Sorry. Please make sure your default Emacs version is 24."))
+
 (add-to-list 'load-path "${CMAKE_INSTALL_PREFIX}/share/emacs/site-lisp")
 (require 'rosemacs-config)
 
