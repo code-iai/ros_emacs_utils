@@ -1,1 +1,4 @@
 *~
+rosemacs/rosemacs-config.el
+slime_ros/sbclrc
+slime_ros/slime-config.el

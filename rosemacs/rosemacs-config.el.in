@@ -14,7 +14,7 @@ Did you forget to install the ros_emacs_utils packages?
 If so, run \"catkin_make install\" in your catkin workspace
 or, if you prefer to only install the specific package,
 run \"catkin_make install --pkg PACKAGE\" where PACKAGE is
-rosemacs, slime, slime_ros and roslisp_repl."))))
+rosemacs, slime_wrapper, slime_ros and roslisp_repl."))))
 
 (require 'rosemacs)
 

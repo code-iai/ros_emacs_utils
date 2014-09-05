@@ -6,22 +6,10 @@ find_package(catkin REQUIRED)
 catkin_package()
 
 #############
-## Compile ##
-#############
-
-configure_file(
-  ${PROJECT_SOURCE_DIR}/sbclrc.in
-  ${PROJECT_SOURCE_DIR}/sbclrc)
-configure_file(
-  ${PROJECT_SOURCE_DIR}/rosemacs-config.el.in
-  ${PROJECT_SOURCE_DIR}/rosemacs-config.el)
-
-#############
 ## Install ##
 #############
 
-install(FILES swank.lisp sbclrc
-  general-config.el rosemacs-config.el slime-config.el repl-config.el
+install(FILES repl-config.el
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
 install(PROGRAMS roslisp_repl

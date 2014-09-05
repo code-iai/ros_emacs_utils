@@ -1,4 +1,5 @@
 
+(add-to-list 'load-path "${CMAKE_INSTALL_PREFIX}/share/emacs/site-lisp")
 (require 'rosemacs-config)
 
 (require 'slime-autoloads)
