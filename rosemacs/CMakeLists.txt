@@ -26,9 +26,9 @@ install(PROGRAMS poll-rosnode poll-rostopic
 install(FILES manifest.rnc roslaunch.rnc rng-schemas.xml
   DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/emacs/site-lisp)
 
-# hmm, snippets should go into the home... but where exactly?... .emacs.d?...
-# foreach(subdir
-#     c++-mode)
-#   install(DIRECTORY snippets/${subdir}
-#     DESTINATION share/emacs/snippets)
-# endforeach()
+foreach(subdir
+    c++-mode)
+  install(DIRECTORY snippets/${subdir}
+    DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/emacs/site-lisp/snippets)
+endforeach()
+install(FILES yasnippet.el DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/emacs/site-lisp)
