@@ -28,3 +28,6 @@ install(FILES slime-ros.el slime-config.el
 
 install(FILES swank-ros.asd swank-ros.lisp
   DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/common-lisp/source)
+
+install(PROGRAMS slime_ros_init
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
