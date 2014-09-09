@@ -1,3 +1,0 @@
-[submodule "slime_wrapper/src"]
-	path = slime_wrapper/src
-	url = https://github.com/slime/slime
