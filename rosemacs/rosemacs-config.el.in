@@ -46,9 +46,9 @@ rosemacs, slime_wrapper, slime_ros and roslisp_repl."))))
                 ("\\.launch"   . xml-mode)) auto-mode-alist))
 
 ;;; Yasnippets: templates for standard structures. E.g. wgh TAB in a *.h file.
-(require 'yasnippet)
-(add-to-list 'yas-snippet-dirs "${CMAKE_INSTALL_PREFIX}/share/emacs/site-lisp/snippets")
-(yas-global-mode 1)
+;; (require 'yasnippet)
+;; (add-to-list 'yas-snippet-dirs "${CMAKE_INSTALL_PREFIX}/share/emacs/site-lisp/snippets")
+;; (yas-global-mode 1)
 
 ;;; Load / set up rosemacs
 (require 'rosemacs)
