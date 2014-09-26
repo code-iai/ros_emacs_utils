@@ -18,10 +18,10 @@ If you don't work with Lisp and just use Emacs for C++ or Python or Java or what
 you just need to add the following lines to your Emacs initialization file (init.el or similar):
 
 ```lisp
-(add-to-list 'load-path "PATH_TO_ROSLISP_REPL")
+(add-to-list 'load-path "/opt/ros/DISTRO/share/emacs/site-lisp")
 (require 'rosemacs-config)
 ```
-where ```PATH_TO_ROSLISP_REPL``` is what ```rospack find roslisp_repl``` gives you.
+where ```DISTRO``` is the name of your ROS distribution, e.g. ```indigo```.
 
 ## Lisp programmer
 
@@ -32,25 +32,29 @@ If you work with roslisp, all you need to do is to start ```roslisp_repl``` in t
 If you want to start the REPL from inside of your Emacs process, add the following to your Emacs init script:
 
 ```lisp
-(add-to-list 'load-path "PATH_TO_ROSLISP_REPL")
+(add-to-list 'load-path "PATH_TO_SLIME_ROS")
 (require 'slime-config)
 ```
-where ```PATH_TO_ROSLISP_REPL``` is what ```rospack find roslisp_repl``` gives you.
-It is important to have run ```./roslisp_repl``` at least once before you're able to start things from Emacs,
-as ```roslisp_repl```, besides starting configured Emacs for you,
-also creates ```.swank.lisp``` and ```.sbclrc``` in your home directory.
+where ```PATH_TO_SLIME_ROS``` is what ```rospack find slime_ros``` gives you, e.g. ```"/opt/ros/indigo/share/slime_ros"```, or ```"YOUR_CATKIN_WS/src/ros_emacs_utils/slime_ros"```
+if you're installing from source.
+
+Then you need to run
+```bash
+$ rosrun slime_ros slime_ros_init
+```
+which will create ```.swank.lisp``` and ```.sbclrc``` in your home directory.
 If you already have them there, backup / delete them first,
 they are not being overwritten by default for safety reasons.
 
+Once set up, you can start the REPL from your emacs by pressing ```M-x slime```,
+which means pressing the ```Alt``` key and ```x``` at the same time and then typing
+```slime``` .
+
 ### For developers
 
-There is a number of things to take into account when compiling ros_emacs_utils from source:
-* This repo has Slime as a git submodule.
-  So, if you clone it into your workspace with ```git clone```, make sure to [update the submodule]
-  (http://git-scm.com/book/en/Git-Tools-Submodules#Cloning-a-Project-with-Submodules) as well.
-  But better just use ```wstool```, it knows how to deal with submodules.
-* Also, in order for the code to work you not only need to run ```catkin_make``` on the packages,
-  but also install them (```catkin_make install```).
+There is one detail to take into account when **compiling ros_emacs_utils from source**:
+in order for the code to work you not only need to run ```catkin_make``` on the packages,
+but also install them (```catkin_make install```).
 
 Why do we need to ```catkin_make install```? (Skip the next two paragraphs if you don't care.)
 
@@ -58,7 +62,7 @@ All the packages have their Emacs Lisp part contained in a single or multiple ``
 During installation of the packages those files are being copied
 into ```YOUR_INSTALL_DIR/share/emacs/site-lisp```. Therefore, you need to tell Emacs
 in the initialization script to add that directory to the Emacs ```load-path```
-in a recursive way. That is done in ```repl-config.el```.
+in a recursive way. That is done in ```rosemacs-config.el```.
 
 In addition to the Emacs Lisp part, all the packages except ```rosemacs```
 have a Common Lisp part, and all the ```*.lisp``` files are being copied
@@ -67,9 +71,11 @@ this replicates the Debian approach to installing Emacs Lisp and Common Lisp fil
 Therefore, you need to tell your Common Lisp compiler, actually linker, i.e. ASDF,
 to search for systems in that directory. That is done in ```.sbclrc```.
 As you can see, right now only SBCL is supported.
-The original file can be found in your ```roslisp_repl``` ROS package under the name ```sbclrc```.
-When starting the ```roslisp_repl``` executable, this file is being copied into the home directory,
-unless it already exists there. Check the ```roslisp_repl``` executable for more info.
+The original file can be found in your ```slime_ros``` ROS package under the name ```sbclrc```.
+When starting the ```roslisp_repl``` executable, ```slime_ros_init``` is called,
+which in its turn copies ```sbclrc``` into the home directory,
+unless it already exists there. Check the ```slime_ros_init``` executable from ```slime_ros``` pacakge
+for more info.
 
 ### System requirements
 
@@ -77,8 +83,7 @@ This is only for the Lisp developers.
 For non-Lisp developers things should be quite portable.
 
 * Emacs24
-* roslisp installed
-* SBCL as the default Common Lisp compiler
+* SBCL as the preferred Common Lisp compiler
 
 
 ### FAQ
