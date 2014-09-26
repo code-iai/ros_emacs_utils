@@ -15,7 +15,7 @@ and a Slime REPL called ```roslisp_repl```, configured to start slime, slime_ros
 ## Not a Lisp programmer
 
 If you don't work with Lisp and just use Emacs for C++ or Python or Java or whatever else,
-you just need to add the following lines to your Emacs initialization file (init.el or similar):
+you just need to add the following lines to your [Emacs initialization file](http://www.emacswiki.org/emacs/InitFile) (init.el or similar):
 
 ```lisp
 (add-to-list 'load-path "/opt/ros/DISTRO/share/emacs/site-lisp")
