@@ -20,6 +20,9 @@
 (autoload 'mwheel-install "mwheel" "Enable mouse wheel support.")
 
 ;;; Start slime
+;; ``slime-config`` is located in the ``slime_ros`` package.
+;; It's path is passed to emacs through the -L argument of
+;; the ``roslisp_repl`` executable.
 (require 'slime-config)
 (slime)
 
