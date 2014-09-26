@@ -32,8 +32,7 @@ If you work with roslisp, all you need to do is to start ```roslisp_repl``` in t
 If you want to start the REPL from inside of your Emacs process, add the following to your Emacs init script:
 
 ```lisp
-(add-to-list 'load-path "PATH_TO_SLIME_ROS")
-(require 'slime-config)
+(require 'slime-config "PATH_TO_SLIME_ROS/slime-config.el")
 ```
 where ```PATH_TO_SLIME_ROS``` is what ```rospack find slime_ros``` gives you, e.g. ```"/opt/ros/indigo/share/slime_ros"```, or ```"YOUR_CATKIN_WS/src/ros_emacs_utils/slime_ros"```
 if you're installing from source.
