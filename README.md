@@ -74,7 +74,7 @@ As you can see, right now only SBCL is supported.
 The original file can be found in your ```slime_ros``` ROS package under the name ```sbclrc```.
 When starting the ```roslisp_repl``` executable, ```slime_ros_init``` is called,
 which in its turn copies ```sbclrc``` into the home directory,
-unless it already exists there. Check the ```slime_ros_init``` executable from ```slime_ros``` pacakge
+unless it already exists there. Check the ```slime_ros_init``` executable from ```slime_ros``` package
 for more info.
 
 ### System requirements
