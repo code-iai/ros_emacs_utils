@@ -17,22 +17,6 @@ or, if you prefer to only install the specific package,
 run \"catkin_make install --pkg PACKAGE\" where PACKAGE is
 rosemacs, slime_wrapper, slime_ros and roslisp_repl."))))
 
-;;; Autocomplete in the minibuffer for filenames etc.
-(require 'ido)
-(ido-mode 'both)
-(ido-everywhere 1)
-(setq ido-completion-buffer-all-completions t)
-(setq ido-auto-merge-delay-time 2)
-(setq ido-default-buffer-method (quote selected-window))
-(setq ido-default-file-method (quote samewindow))
-(setq ido-enable-dot-prefix t)
-(setq ido-enable-flex-matching t)
-(setq ido-max-window-height 5)
-(setq ido-read-file-name-as-directory-commands (quote (find-dired)))
-(setq ido-show-dot-for-dired t)
-(setq ido-use-filename-at-point (quote guess))
-(setq ido-use-url-at-point t)
-
 ;;; Default modes list. Mostly there to make sure Yasnippets work.
 ;;; Will overwrite the settings from your emacs init file, so be careful...
 (setq auto-mode-alist
@@ -54,6 +38,5 @@ rosemacs, slime_wrapper, slime_ros and roslisp_repl."))))
 (require 'rosemacs)
 (invoke-rosemacs)
 (global-set-key "\C-x\C-r" ros-keymap)
-(setq ros-completion-function (quote ido-completing-read))
 
 (provide 'rosemacs-config)
