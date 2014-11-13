@@ -23,7 +23,7 @@
                           "/load-manifest/"))))
       (push load-manifest-directory asdf:*central-registry*)))
   (asdf:operate 'asdf:load-op :ros-load-manifest)
-  (format t "~%ROSLisp welcomes you!"))
+  (format t "~%ROS welcomes you!"))
 
 ;;; Redirect all the I/O from Swank SBCL process to standard I/O
 (setf swank:*globally-redirect-io* t)
