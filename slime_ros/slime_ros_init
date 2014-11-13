@@ -2,8 +2,5 @@
 
 SLIME_ROS_DIR=$(rospack find slime_ros)
 
-[ -f ${HOME}/.swank.lisp ] ||
-cp ${SLIME_ROS_DIR}/swank.lisp ${HOME}/.swank.lisp
-
 [ -f ${HOME}/.sbclrc ] ||
 cp ${SLIME_ROS_DIR}/sbclrc ${HOME}/.sbclrc

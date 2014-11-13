@@ -1,8 +1,8 @@
 
 (defpackage swank-ros
-	(:use :cl)
-	(:import-from :swank #:defslimefun)
-	(:export #:load-ros-manifest))
+  (:use :cl)
+  (:import-from :swank #:defslimefun)
+  (:export #:load-ros-manifest))
 
 (in-package :swank-ros)
 
@@ -16,13 +16,16 @@
 
 ;;; Add appropriate paths for asdf to look for ros-load-manifest and load it
 (defslimefun load-ros-manifest (asdf-system-directory)
-	(unless (asdf:find-system :ros-load-manifest nil)
-		(let ((load-manifest-directory (parse-namestring
-																		(concatenate 'string
-																								 (namestring asdf-system-directory)
-																								 "/load-manifest/"))))
-			(push load-manifest-directory asdf:*central-registry*)))
-	(asdf:operate 'asdf:load-op :ros-load-manifest)
-	(format t "[swank-ros] Successfully loaded the :ros-load-manifest system~%~%"))
+  (unless (asdf:find-system :ros-load-manifest nil)
+    (let ((load-manifest-directory
+            (parse-namestring
+             (concatenate 'string (namestring asdf-system-directory)
+                          "/load-manifest/"))))
+      (push load-manifest-directory asdf:*central-registry*)))
+  (asdf:operate 'asdf:load-op :ros-load-manifest)
+  (format t "~%ROSLisp welcomes you!"))
+
+;;; Redirect all the I/O from Swank SBCL process to standard I/O
+(setf swank:*globally-redirect-io* t)
 
 (provide :swank-ros)

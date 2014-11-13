@@ -20,7 +20,7 @@ configure_file(
 ## Install ##
 #############
 
-install(FILES slime-config.el swank.lisp sbclrc
+install(FILES slime-config.el sbclrc
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
 install(FILES slime-ros.el
