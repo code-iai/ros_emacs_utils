@@ -9,7 +9,7 @@
 (setq slime-backend "swank-loader.lisp")
 (add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode 1)))
 
-(setq inferior-lisp-program "/usr/bin/sbcl --dynamic-space-size 4096")
+(setq inferior-lisp-program "/usr/bin/sbcl")
 (setq slime-lisp-implementations nil)
 
 (setq slime-contribs '(slime-repl
