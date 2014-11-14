@@ -11,6 +11,11 @@ a wrapper for Slime (Lisp interactive development environment) called ```slime_w
 a contrib for Slime to work with ROS ```slime_ros```,
 and a Slime REPL called ```roslisp_repl```, configured to start slime, slime_ros and roslisp.
 
+This document only gives you instructions on installation.
+For other information consult the official wiki pages of the packages:
+[rosemacs](http://wiki.ros.org/rosemacs) for non Lisp programmers
+and [roslisp_repl](http://wiki.ros.org/roslisp_repl) otherwise.
+
 
 ## Not a Lisp programmer
 
@@ -35,18 +40,20 @@ If you want to start the REPL from inside of your Emacs process, add the followi
 (require 'slime-config "PATH_TO_SLIME_ROS/slime-config.el")
 ```
 where ```PATH_TO_SLIME_ROS``` is what ```rospack find slime_ros``` gives you, e.g. ```"/opt/ros/indigo/share/slime_ros"```, or ```"YOUR_CATKIN_WS/src/ros_emacs_utils/slime_ros"```
-if you're installing from source.
+if you're installing from source. After that line you can add the usual Slime
+customization commands, like setting the ```inferior-lisp-program``` or
+turning off the ```slime-startup-animation``` etc.
 
 Then you need to run
 ```bash
 $ rosrun slime_ros slime_ros_init
 ```
-which will create ```.swank.lisp``` and ```.sbclrc``` in your home directory.
-If you already have them there, backup / delete them first,
-they are not being overwritten by default for safety reasons.
+which will create ```.sbclrc``` in your home directory.
+If you already have it there, backup / delete it first,
+it is not being overwritten by default for safety reasons.
 
-Once set up, you can start the REPL from your emacs by pressing ```M-x slime```,
-which means pressing the ```Alt``` key and ```x``` at the same time and then typing
+Once set up, you can start the REPL from your Emacs by pressing ```M-x slime```,
+which means holding the ```Alt``` key and pressing ```x``` and then typing
 ```slime``` .
 
 ### For developers
