@@ -9,6 +9,9 @@
 (setq slime-backend "swank-loader.lisp")
 (add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode 1)))
 
+;; If you don't like the highlighting of new uncompiled code, uncomment this:
+;; (add-hook 'slime-mode-hook (lambda () (slime-highlight-edits-mode 0)))
+
 (setq inferior-lisp-program "/usr/bin/sbcl")
 (setq slime-lisp-implementations nil)
 

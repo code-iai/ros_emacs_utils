@@ -15,6 +15,9 @@
 ;; It's path is passed to emacs through the -L argument of
 ;; the ``roslisp_repl`` executable.
 (require 'slime-config)
+;; The following gets rid of the gray highlighting of uncompiled code
+;; that can be confusing and annoying for the beginner Lispers.
+(add-hook 'slime-mode-hook (lambda () (slime-highlight-edits-mode 0)))
 (slime)
 
 ;;; Footer
