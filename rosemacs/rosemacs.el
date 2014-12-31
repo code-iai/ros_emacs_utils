@@ -446,7 +446,7 @@
   (let ((old-ido-make-file-list (symbol-function 'ido-make-file-list-1))
         (ros-packages-list (map 'list #'identity ros-packages))
         (ros-stacks-list (map 'list #'identity ros-stacks)))
-    (flet ((pkg-expr->path (str)
+    (cl-flet ((pkg-expr->path (str)
                            (let ((pkg-name (second (split-string str "/"))))
                              (unless (= (length pkg-name) 0)
                                (cond ((member pkg-name ros-packages-list)
@@ -456,7 +456,7 @@
                                       (concat (ros-stack-dir pkg-name)
                                               (substring str (string-match "/" str 1))))
                                      (t nil))))))
-      (flet ((ido-make-file-list-1 (dir &optional merged)
+      (cl-flet ((ido-make-file-list-1 (dir &optional merged)
                                    (let ((path (pkg-expr->path dir)))
                                      (if path
                                          (funcall old-ido-make-file-list path merged)
