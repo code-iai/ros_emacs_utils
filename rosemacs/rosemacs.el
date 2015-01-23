@@ -1717,13 +1717,12 @@ The page delimiter in this buffer matches the start, so you can use forward/back
   (rosemacs/track-nodes ros-node-update-interval)
 
   ;; nxml mode
-  (when (>= emacs-major-version 23)
-    (require 'rng-loc)
-    (cl-pushnew (concat rosemacs/pathname "/rng-schemas.xml") rng-schema-locating-files)
-    (add-to-list 'auto-mode-alist '("\.launch$" . nxml-mode))
-    (add-to-list 'auto-mode-alist '("manifest.xml" . nxml-mode))
-    (add-to-list 'auto-mode-alist '("\\.urdf" . xml-mode))
-    (add-to-list 'auto-mode-alist '("\\.xacro" . xml-mode)))
+  (require 'rng-loc)
+  (cl-pushnew (concat rosemacs/pathname "/rng-schemas.xml") rng-schema-locating-files)
+  (add-to-list 'auto-mode-alist '("\.launch$" . nxml-mode))
+  (add-to-list 'auto-mode-alist '("manifest.xml" . nxml-mode))
+  (add-to-list 'auto-mode-alist '("\\.urdf" . xml-mode))
+  (add-to-list 'auto-mode-alist '("\\.xacro" . xml-mode))
 
   ;; rosbag view mode
   (add-to-list 'auto-mode-alist '("\.bag$" . rosbag-view-mode))  
