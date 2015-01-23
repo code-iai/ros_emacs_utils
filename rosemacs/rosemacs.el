@@ -449,7 +449,7 @@
         (ros-packages-list (cl-map 'list #'identity ros-packages))
         (ros-stacks-list (cl-map 'list #'identity ros-stacks)))
     (cl-flet ((pkg-expr->path (str)
-                              (let ((pkg-name (second (split-string str "/"))))
+                              (let ((pkg-name (cl-second (split-string str "/"))))
                                 (unless (= (length pkg-name) 0)
                                   (cond ((member pkg-name ros-packages-list)
                                          (concat (ros-package-dir pkg-name)
@@ -1064,7 +1064,7 @@ q kills buffer"
       (let ((rate-pair (assoc topic ros-topic-publication-rates)))
         (when rate-pair
           (let ((rate (cdr rate-pair))
-                (diff (- (second (current-time)) (or (cdr (assoc topic ros-topic-last-hz-rate)) 0.0))))
+                (diff (- (cl-second (current-time)) (or (cdr (assoc topic ros-topic-last-hz-rate)) 0.0))))
             (if rate
                 (if (> diff ros-topic-timeout-rate)
                     (princ (format " %s : %s (as of %s seconds ago)" topic rate diff) ros-topic-buffer)
@@ -1149,7 +1149,7 @@ q kills buffer"
         (setf (cdr rate-pair) rate)
       (push (cons topic rate) ros-topic-publication-rates)))
   (let ((last-time-pair (assoc topic ros-topic-last-hz-rate))
-        (time-in-seconds (second (current-time))))
+        (time-in-seconds (cl-second (current-time))))
     (if last-time-pair
         (setf (cdr last-time-pair) time-in-seconds)
       (push (cons topic time-in-seconds) ros-topic-last-hz-rate)))
