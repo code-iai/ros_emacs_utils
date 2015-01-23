@@ -3,6 +3,9 @@ ros_emacs_utils
 
 This is a collection of packages to work on ROS-based software from Emacs.
 
+Supported are the versions of Emacs >= 24.3. For older versions please use the
+[older-than-emacs24.3 branch](https://github.com/code-iai/ros_emacs_utils/tree/older-than-emacs24.3).
+
 It has a ```rosemacs``` package, which contains functions for starting a roscore,
 monitoring ROS nodes etc (with corresponding Emacs key bindings).
 And, in addition to that, it has a number of packages to simplify
