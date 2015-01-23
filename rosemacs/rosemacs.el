@@ -267,7 +267,7 @@
 
 
 (defun get-rosemacs-path ()
-  (message "rosemacs\nloaded path: %s" load-file-name)
+  (message "[rosemacs] path: %s" load-file-name)
   (let* ((a-path (or load-file-name ""))
 	 (ind (string-match "\\(.*\\)rosemacs.el\\(\\|c\\)$" a-path)))
     (if ind
