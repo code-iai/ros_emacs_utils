@@ -53,7 +53,7 @@
 ;;
 ;; 5. Make sure the standard ROS variables are set in the
 ;;    emacs process environment.  If you follow the standard
-;;    ROS installation instructions about sourcing .bashrc.ros
+;;    ROS installation instructions about sourcing setup.bash
 ;;    in your .bashrc, then this will automatically happen
 ;;    if you launch emacs from a bash shell.
 ;; 
