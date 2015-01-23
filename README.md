@@ -6,13 +6,13 @@ This is a collection of packages to work on ROS-based software from Emacs.
 Supported are the versions of Emacs >= 24.3. For older versions please use the
 [older-than-emacs24.3 branch](https://github.com/code-iai/ros_emacs_utils/tree/older-than-emacs24.3).
 
-It has a ```rosemacs``` package, which contains functions for starting a roscore,
+The repo contains a ```rosemacs``` package, which provides functions for starting a roscore,
 monitoring ROS nodes etc (with corresponding Emacs key bindings).
 And, in addition to that, it has a number of packages to simplify
 development of roslisp-based packages. Among them is
 a wrapper for Slime (Lisp interactive development environment) called ```slime_wrapper```,
 a contrib for Slime to work with ROS ```slime_ros```,
-and a Slime REPL called ```roslisp_repl```, configured to start slime, slime_ros and roslisp.
+and a Slime REPL called ```roslisp_repl```, configured to start slime, slime_ros and setup roslisp.
 
 This document only gives you instructions on installation.
 For other information consult the official wiki pages of the packages:
