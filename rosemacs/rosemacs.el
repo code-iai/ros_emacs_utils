@@ -383,8 +383,8 @@
     ;; E.G. navp_action/nav_actionFeedback -> nav_actionFeedback
     (if index
         (if package
-            (subseq word 0 index)
-            (subseq word (1+ index)))
+            (cl-subseq word 0 index)
+            (cl-subseq word (1+ index)))
       word)))
 
 (setq topic-completor (dynamic-completion-table
@@ -710,7 +710,7 @@
                    (when (and index
                               (= index (- (length message-name) (length suffix))))
                      index))
-         when (integerp x) return (subseq message-name 0 x)))
+         when (integerp x) return (cl-subseq message-name 0 x)))
 
 ;; (defun action-message-to-action (message-name)
 ;;   "removes a Goal, Result or Feedback Suffix"
@@ -855,7 +855,7 @@ parameter."
         (let ((l (length deleted)))
           (when (> l 0)
             (if (= l 1)
-                (rosemacs/add-event (format "Ros node %s exited" (first deleted)) t)
+                (rosemacs/add-event (format "Ros node %s exited" (car deleted)) t)
               (rosemacs/add-event (format "%s ros nodes exited: %s" l deleted) t))))))))
 
 (defun rosemacs/rosnode-filter (proc str)
@@ -1180,11 +1180,11 @@ q kills buffer"
   (let ((pair (assoc topic ros-topic-hertz-processes)))
     (when pair (kill-buffer (process-buffer (cdr pair)))))
   (setq ros-topic-hertz-processes
-        (delete-if (lambda (pair) (equal (car pair) topic)) ros-topic-hertz-processes)
+        (cl-delete-if (lambda (pair) (equal (car pair) topic)) ros-topic-hertz-processes)
         ros-topic-publication-rates
-        (delete-if (lambda (pair) (equal (car pair) topic)) ros-topic-publication-rates)
+        (cl-delete-if (lambda (pair) (equal (car pair) topic)) ros-topic-publication-rates)
         ros-topic-last-hz-rate
-        (delete-if (lambda (pair) (equal (car pair) topic)) ros-topic-last-hz-rate)))
+        (cl-delete-if (lambda (pair) (equal (car pair) topic)) ros-topic-last-hz-rate)))
 
 
 (defun set-ros-topic-hz (topic rate)
@@ -1241,7 +1241,7 @@ else if not published yet, return the number -1, else return nil"
 
 
 (defun satisfies-hz-regexps (topic)
-  (some (lambda (regexp) (string-match regexp topic)) ros-hz-topic-regexps))
+  (cl-some (lambda (regexp) (string-match regexp topic)) ros-hz-topic-regexps))
 
 
 (defun add-ros-topic (topic)
@@ -1316,13 +1316,13 @@ else if not published yet, return the number -1, else return nil"
 
 (defun ros-command-prefix (commands)
   (save-excursion
-    (block match-block
+    (cl-block match-block
       (let ((arg (ros-emacs-last-word)))
         (skip-syntax-backward " ")
         (dolist (cmd commands nil)
           (when (string-equal cmd (buffer-substring-no-properties
                                    (- (point) (length cmd)) (point)))
-            (return-from match-block arg)))))))
+            (cl-return-from match-block arg)))))))
 
 (defun comint-get-ros-topic-prefix ()
   (save-excursion
@@ -1436,7 +1436,7 @@ Prefix argument allows you to edit the rosrun command before executing it."
                    (read-string "Enter rosrun command: " default-command
                                 'rosrun/history-list default-command)
                  default-command)))
-             (prefix (subseq rosrun-command 0 3))
+             (prefix (cl-subseq rosrun-command 0 3))
              (expected-prefix (list "rosrun" pkg exec)))
         (if (equal prefix expected-prefix)
             (save-excursion
@@ -1444,7 +1444,7 @@ Prefix argument allows you to edit the rosrun command before executing it."
               (comint-mode)
               (setq ros-run-pkg pkg
                     ros-run-executable exec
-                    ros-run-args (subseq rosrun-command 3))
+                    ros-run-args (cl-subseq rosrun-command 3))
               (rosrun/restart buf))
           (warn "prefix %s did not equal %s.  Not running."
                 prefix expected-prefix))))))
@@ -1546,8 +1546,8 @@ With prefix arg, allows editing rosmake command before starting."
                   (save-excursion
                     (set-buffer buf)
                     (comint-mode)
-                    (setq ros-launch-cmd (first roslaunch-command)
-                          ros-launch-args (rest roslaunch-command))
+                    (setq ros-launch-cmd (car roslaunch-command)
+                          ros-launch-args (cdr roslaunch-command))
                     (message "cmd is %s and args are %s" ros-launch-cmd ros-launch-args)
                     (setq ros-launch-path path)
                     (setq ros-launch-filename dir-suffix)
@@ -1579,8 +1579,8 @@ With prefix arg, allows editing rosmake command before starting."
               (comint-mode)
               (setq ros-launch-path path
                     ros-launch-filename filename
-                    ros-launch-cmd (first roslaunch-command)
-                    ros-launch-args (rest roslaunch-command))
+                    ros-launch-cmd (car roslaunch-command)
+                    ros-launch-args (cdr roslaunch-command))
               (ros-launch-mode 1)
               (rosemacs/relaunch (current-buffer)))))))))
 
