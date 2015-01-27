@@ -86,13 +86,13 @@ which in its turn copies ```sbclrc-ros``` into the home directory,
 and adds a necessary entry into ```.sbclrc```.
 Check the ```slime_ros_init``` executable from ```slime_ros``` package for more info.
 
-### System requirements
+## System requirements
 
 * Emacs24.3+
 * For Common Lisp developers: SBCL as the preferred compiler
 
 
-### FAQ
+## FAQ
 
 * Q: Why doesn't my ```roslisp_repl``` start properly / find ```rosemacs```?
 * A: Probably because you didn't install the ```ros_emacs_utils``` packages,
