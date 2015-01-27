@@ -20,9 +20,10 @@ For other information consult the official wiki pages of the packages:
 and [roslisp_repl](http://wiki.ros.org/roslisp_repl) otherwise.
 
 
-## Not a Lisp programmer
+## Not a Common Lisp programmer
 
-If you don't work with Lisp and just use Emacs for C++ or Python or Java or whatever else,
+If you don't work with Common Lisp and just use Emacs for C++ or Python
+or Java or Lisp dialects other than Common Lisp or whatever else,
 you just need to add the following lines to your [Emacs initialization file](http://www.emacswiki.org/emacs/InitFile) (init.el or similar):
 
 ```lisp
@@ -31,7 +32,7 @@ you just need to add the following lines to your [Emacs initialization file](htt
 ```
 where ```DISTRO``` is the name of your ROS distribution, e.g. ```indigo```.
 
-## Lisp programmer
+## Common Lisp programmer
 
 ### For users
 
@@ -87,11 +88,8 @@ Check the ```slime_ros_init``` executable from ```slime_ros``` package for more 
 
 ### System requirements
 
-This is only for the Lisp developers.
-For non-Lisp developers things should be quite portable.
-
-* Emacs24
-* SBCL as the preferred Common Lisp compiler
+* Emacs24.3+
+* For Common Lisp developers: SBCL as the preferred compiler
 
 
 ### FAQ
