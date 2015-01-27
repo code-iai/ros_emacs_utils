@@ -10,8 +10,8 @@ catkin_package()
 ###############
 
 configure_file(
-  ${PROJECT_SOURCE_DIR}/sbclrc.in
-  ${PROJECT_SOURCE_DIR}/sbclrc)
+  ${PROJECT_SOURCE_DIR}/sbclrc-ros.in
+  ${PROJECT_SOURCE_DIR}/sbclrc-ros)
 configure_file(
   ${PROJECT_SOURCE_DIR}/slime-config.el.in
   ${PROJECT_SOURCE_DIR}/slime-config.el)
@@ -20,7 +20,7 @@ configure_file(
 ## Install ##
 #############
 
-install(FILES slime-config.el sbclrc
+install(FILES slime-config.el sbclrc-ros
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
 install(FILES slime-ros.el
