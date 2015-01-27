@@ -51,9 +51,8 @@ Then you need to run
 ```bash
 $ rosrun slime_ros slime_ros_init
 ```
-which will create ```.sbclrc``` in your home directory.
-If you already have it there, backup / delete it first,
-it is not being overwritten by default for safety reasons.
+which will create ```.sbclrc-ros``` in your home directory
+and add an entry into your ```.sbclrs``` to load ```.sbclrc-ros```.
 
 Once set up, you can start the REPL from your Emacs by pressing ```M-x slime```,
 which means holding the ```Alt``` key and pressing ```x``` and then typing
@@ -78,13 +77,13 @@ have a Common Lisp part, and all the ```*.lisp``` files are being copied
 into ```YOUR_INSTALL_DIR/share/common-lisp/source```,
 this replicates the Debian approach to installing Emacs Lisp and Common Lisp files.
 Therefore, you need to tell your Common Lisp compiler, actually linker, i.e. ASDF,
-to search for systems in that directory. That is done in ```.sbclrc```.
-As you can see, right now only SBCL is supported.
-The original file can be found in your ```slime_ros``` ROS package under the name ```sbclrc```.
+to search for systems in that directory. That is done in ```.sbclrc```,
+or, more correctly, in ```.sbclrc-ros```. As you can see, right now only SBCL is supported.
+The original file can be found in your ```slime_ros``` ROS package under the name ```sbclrc-ros```.
 When starting the ```roslisp_repl``` executable, ```slime_ros_init``` is called,
-which in its turn copies ```sbclrc``` into the home directory,
-unless it already exists there. Check the ```slime_ros_init``` executable from ```slime_ros``` package
-for more info.
+which in its turn copies ```sbclrc-ros``` into the home directory,
+and adds a necessary entry into ```.sbclrc```.
+Check the ```slime_ros_init``` executable from ```slime_ros``` package for more info.
 
 ### System requirements
 
@@ -102,6 +101,14 @@ For non-Lisp developers things should be quite portable.
 e.g. ```catkin_make install``` them.
 Just follow the directions in the error pop up winodw (or echo buffer) of your Emacs.
 
+-
 
-* Q: I installed the packages. Why doesn't it still work?
+* Q: It says component "swank" cannot be found.
+* A: There might be something wrong in your ```.sbclrc``` or ```.sbclrc-ros```.
+Try calling ```rosrun slime_ros slime_ros_init``` if you haven't done that yet.
+(When starting REPL through ```roslisp_repl``` the script is called automatically.) 
+
+-
+
+* Q: It still doesn't work!
 * A: Please file a bug report on Github.
