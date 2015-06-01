@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>slime_ros</name>
-  <version>0.4.6</version>
+  <version>0.4.7</version>
   <description>Extensions for slime to assist in working with ROS packages</description>
 
   <maintainer email="kazhoyan@cs.uni-bremen.de">Gayane Kazhoyan</maintainer>
