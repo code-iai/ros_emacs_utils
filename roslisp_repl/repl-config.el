@@ -9,6 +9,10 @@
 (global-set-key '[delete] 'delete-char)
 (setq minibuffer-max-depth nil)
 (autoload 'mwheel-install "mwheel" "Enable mouse wheel support.")
+;; Enable copy-pasting between programs (Kill-ring <-> x11)
+(setq x-select-enable-clipboard t)
+(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
+
 
 ;;; Start slime
 ;; ``slime-config`` is located in the ``slime_ros`` package.
@@ -67,6 +71,8 @@
 (modify-syntax-entry ?\] ")[  " lisp-mode-syntax-table)
 
 (slime)
+
+(delete-other-windows)
 
 ;;; Footer
 (provide 'repl-config)
