@@ -13,6 +13,7 @@ file(GLOB SLIME_LIB_EL_FILES "src/lib/*.el")
 file(GLOB SLIME_LISP_FILES "src/*.lisp")
 file(GLOB SLIME_ASD_FILES "src/*.asd")
 file(GLOB SLIME_CONTRIB_LISP_FILES "src/contrib/*.lisp")
+file(GLOB SLIME_SWANK_LISP_FILES "src/swank/*.lisp")
 
 install(FILES ${SLIME_EL_FILES}
   DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/emacs/site-lisp/slime)
@@ -26,6 +27,8 @@ install(FILES ${SLIME_ASD_FILES}
   DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/common-lisp/source/slime)
 install(FILES ${SLIME_CONTRIB_LISP_FILES}
   DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/common-lisp/source/slime/contrib)
+install(FILES ${SLIME_SWANK_LISP_FILES}
+  DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/common-lisp/source/slime/swank)
 install(FILES src/ChangeLog
   DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/emacs/site-lisp/slime)
 install(FILES src/ChangeLog

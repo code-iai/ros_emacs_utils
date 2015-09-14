@@ -20,6 +20,7 @@
                          'slime-after-change-function 'append t)))
    (add-hook 'slime-event-hooks 'slime-dispatch-presentation-event)
    (setq slime-write-string-function 'slime-presentation-write)
+   (add-hook 'slime-connected-hook 'slime-presentations-on-connected)
    (add-hook 'slime-repl-return-hooks 'slime-presentation-on-return-pressed)
    (add-hook 'slime-repl-current-input-hooks 'slime-presentation-current-input)
    (add-hook 'slime-open-stream-hooks 'slime-presentation-on-stream-open)
@@ -38,15 +39,8 @@
 ;;           'slime-presentation-inspector-insert-ispec))
 ;;
 (defface slime-repl-output-mouseover-face
-  (if (featurep 'xemacs)
-      '((t (:bold t)))
-    (if (slime-face-inheritance-possible-p)
-        '((t
-           (:box
-            (:line-width 1 :color "black" :style released-button)
-            :inherit
-            slime-repl-inputed-output-face)))
-      '((t (:box (:line-width 1 :color "black"))))))
+    '((t (:box (:line-width 1 :color "black" :style released-button)
+          :inherit slime-repl-inputed-output-face)))
   "Face for Lisp output in the SLIME REPL, when the mouse hovers over it"
   :group 'slime-repl)
 
@@ -772,7 +766,7 @@ output; otherwise the new input is appended."
 ;;; hook functions (hard to isolate stuff)
 
 (defun slime-dispatch-presentation-event (event)
-  (destructure-case event
+  (slime-dcase event
     ((:presentation-start id &optional target)
      (slime-mark-presentation-start id target)
      t)
@@ -811,8 +805,10 @@ output; otherwise the new input is appended."
   "Return the current input as string.
 The input is the region from after the last prompt to the end of
 buffer. Presentations of old results are expanded into code."
-  (slime-buffer-substring-with-reified-output  slime-repl-input-start-mark
-					       (point-max)))
+  (slime-buffer-substring-with-reified-output slime-repl-input-start-mark
+                                              (if until-point-p
+                                                  (point)
+                                                (point-max))))
 
 (defun slime-presentation-on-return-pressed (end-of-input)
   (when (and (car (slime-presentation-around-or-before-point (point)))
@@ -850,7 +846,7 @@ even on Common Lisp implementations without weak hash tables."
 (defun slime-presentation-inspector-insert-ispec (ispec)
   (if (stringp ispec)
       (insert ispec)
-    (destructure-case ispec
+    (slime-dcase ispec
       ((:value string id)
        (slime-propertize-region
            (list 'slime-part-number id
@@ -869,5 +865,8 @@ even on Common Lisp implementations without weak hash tables."
   (slime-insert-presentation
    (sldb-in-face local-value value)
    `(:frame-var ,slime-current-thread ,(car frame) ,index) t))
+
+(defun slime-presentations-on-connected ()
+  (slime-eval-async `(swank:init-presentations)))
 
 (provide 'slime-presentations)

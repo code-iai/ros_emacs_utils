@@ -18,40 +18,44 @@
 (defsystem :swank
   :serial t
   :components
-  ((:file "swank-backend")
+  ((:file "swank/backend")
    ;; If/when we require ASDF3, we shall use :if-feature instead
    #+(or cmu sbcl scl)
-   (:file "swank-source-path-parser")
+   (:file "swank/source-path-parser")
    #+(or cmu ecl sbcl scl)
-   (:file "swank-source-file-cache")
+   (:file "swank/source-file-cache")
    #+clisp
    (:file "xref")
    #+(or clisp clozure)
    (:file "metering")
    #+allegro
-   (:file "swank-allegro")
+   (:file "swank/allegro")
    #+armedbear
-   (:file "swank-abcl")
+   (:file "swank/abcl")
+   #+clasp
+   (:file "swank/clasp")
    #+clisp
-   (:file "swank-clisp")
+   (:file "swank/clisp")
    #+clozure
-   (:file "swank-ccl")
+   (:file "swank/ccl")
    #+cmu
-   (:file "swank-cmucl")
+   (:file "swank/cmucl")
    #+cormanlisp
-   (:file "swank-corman")
+   (:file "swank/corman")
    #+ecl
-   (:file "swank-ecl")
+   (:file "swank/ecl")
    #+lispworks
-   (:file "swank-lispworks")
+   (:file "swank/lispworks")
+   #+mkcl
+   (:file "swank/mkcl")
    #+sbcl
-   (:file "swank-sbcl")
+   (:file "swank/sbcl")
    #+scl
-   (:file "swank-scl")
+   (:file "swank/scl")
    #+(or sbcl allegro clisp clozure cormanlisp ecl lispworks)
-   (:file "swank-gray")
-   (:file "swank-match")
-   (:file "swank-rpc")
+   (:file "swank/gray")
+   (:file "swank/match")
+   (:file "swank/rpc")
    (:file "swank")))
 
 (defsystem :swank-util
@@ -61,18 +65,23 @@
   :components ((:file "contrib/swank-repl")))
 
 (defsystem :swank-c-p-c
+  :depends-on (:swank-util)
   :components ((:file "contrib/swank-c-p-c")))
 
 (defsystem :swank-arglists
+  :depends-on (:swank-c-p-c)
   :components ((:file "contrib/swank-arglists")))
 
 (defsystem :swank-fuzzy
+  :depends-on (:swank-util :swank-c-p-c)
   :components ((:file "contrib/swank-fuzzy")))
 
 (defsystem :swank-fancy-inspector
+  :depends-on (:swank-util)
   :components ((:file "contrib/swank-fancy-inspector")))
 
 (defsystem :swank-presentations
+  :depends-on (:swank-repl)
   :components ((:file "contrib/swank-presentations")))
 
 #+sbcl
@@ -81,7 +90,8 @@
   :components ((:file "sbcl-pprint-patch")))
 
 (defsystem :swank-presentation-streams
-  :depends-on (#+sbcl :swank/sbcl-pprint-patch)
+  :depends-on (:swank-presentations
+               #+sbcl :swank/sbcl-pprint-patch)
   :components ((:file "contrib/swank-presentation-streams")))
 
 (defsystem :swank-asdf
@@ -94,6 +104,7 @@
   :components ((:file "contrib/swank-hyperdoc")))
 
 (defsystem :swank-sbcl-exts
+  :depends-on (:swank-arglists)
   :components ((:file "contrib/swank-sbcl-exts")))
 
 (defsystem :swank-mrepl
@@ -109,6 +120,7 @@
   :components ((:file "contrib/swank-indentation")))
 
 (defsystem :swank-listener-hooks
+  :depends-on (:swank-repl)
   :components ((:file "contrib/swank-listener-hooks")))
 
 (defsystem :swank-media

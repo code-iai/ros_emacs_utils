@@ -10,7 +10,8 @@
 
 (in-package :swank)
 
-(swank-require :swank-presentations)
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (swank-require :swank-presentations))
 
 ;; This file contains a mechanism for printing to the slime repl so
 ;; that the printed result remembers what object it is associated
@@ -63,14 +64,13 @@ be sensitive and remember what object it is in the repl if predicate is true"
 	(presenting-object-1 ,object ,stream ,continue)
 	(funcall ,continue)))))
 
-#+sbcl
+#+#:disable-dangerous-patching ; #+sbcl
 (when (and (not (find-symbol "ENQUEUE-ANNOTATION" "SB-PRETTY"))
            (find-package :swank-loader))
   (let ((file (make-pathname :name "sbcl-pprint-patch" :type "lisp"
                              :defaults (symbol-value
                                         (read-from-string "swank-loader:*source-directory*")))))
     (when (probe-file file) (load file))))
-
 
 (let ((last-stream nil)
       (last-answer nil))
@@ -287,7 +287,7 @@ says that I am starting to print an object with this id. The second says I am fi
     (fdefinition 'sb-impl::%print-unreadable-object))
   (sb-ext:without-package-locks 
     (setf (fdefinition 'sb-impl::%print-unreadable-object)
-	  (lambda (object stream type identity body)
+	  (lambda (object stream type identity &optional body)
 	    (presenting-object object stream
 	      (funcall *saved-%print-unreadable-object* 
 		       object stream type identity body))))
@@ -309,6 +309,9 @@ says that I am starting to print an object with this id. The second says I am fi
 
 ;; Hook into SWANK.
 
-(setq *send-repl-results-function* 'present-repl-results-via-presentation-streams)
+(defslimefun init-presentation-streams ()
+  ;; FIXME: import/use swank-repl to avoid package qualifier.
+  (setq swank-repl:*send-repl-results-function*
+	'present-repl-results-via-presentation-streams))
 
 (provide :swank-presentation-streams)

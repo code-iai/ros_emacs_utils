@@ -23,7 +23,16 @@
 
 ;;; Taken from swank-cmucl.lisp, by Helmut Eller
 
-(in-package :swank-backend)
+(defpackage swank/source-path-parser
+  (:use cl)
+  (:export
+   read-source-form
+   source-path-string-position
+   source-path-file-position
+   source-path-source-position)
+  (:shadow ignore-errors))
+
+(in-package swank/source-path-parser)
 
 ;; Some test to ensure the required conformance
 (let ((rt (copy-readtable nil)))
@@ -31,13 +40,18 @@
 	      (nth-value 1 (get-macro-character #\space rt))))
   (assert (not (get-macro-character #\\ rt))))
 
+(eval-when (:compile-toplevel)
+  (defmacro ignore-errors (&rest forms)
+    ;;`(progn . ,forms) ; for debugging
+    `(cl:ignore-errors . ,forms)))
+
 (defun make-sharpdot-reader (orig-sharpdot-reader)
-  #'(lambda (s c n)
-      ;; We want things like M-. to work regardless of any #.-fu in
-      ;; the source file that is to be visited. (For instance, when a
-      ;; file contains #. forms referencing constants that do not
-      ;; currently exist in the image.)
-      (ignore-errors (funcall orig-sharpdot-reader s c n))))
+  (lambda (s c n)
+    ;; We want things like M-. to work regardless of any #.-fu in
+    ;; the source file that is to be visited. (For instance, when a
+    ;; file contains #. forms referencing constants that do not
+    ;; currently exist in the image.)
+    (ignore-errors (funcall orig-sharpdot-reader s c n))))
 
 (defun make-source-recorder (fn source-map)
   "Return a macro character function that does the same as FN, but
@@ -48,38 +62,53 @@ before and after of calling FN in the hashtable SOURCE-MAP."
 	  (values (multiple-value-list (funcall fn stream char)))
 	  (end (file-position stream)))
       #+(or)
-      (format t "[~D \"~{~A~^, ~}\" ~D ~D ~S]~%" 
+      (format t "[~D \"~{~A~^, ~}\" ~D ~D ~S]~%"
 	      start values end (char-code char) char)
-      (unless (null values)
-	(push (cons start end) (gethash (car values) source-map)))
+      (when values
+        (destructuring-bind (&optional existing-start &rest existing-end)
+            (car (gethash (car values) source-map))
+          ;; Some macros may return what a sub-call to another macro
+          ;; produced, e.g. "#+(and) (a)" may end up saving (a) twice,
+          ;; once from #\# and once from #\(. If the saved form
+          ;; is a subform, don't save it again.
+          (unless (and existing-start existing-end
+                       (<= start existing-start end)
+                       (<= start existing-end end))
+            (push (cons start end) (gethash (car values) source-map)))))
       (values-list values))))
 
-(defun make-source-recording-readtable (readtable source-map) 
+(defun make-source-recording-readtable (readtable source-map)
+  (declare (type readtable readtable) (type hash-table source-map))
   "Return a source position recording copy of READTABLE.
 The source locations are stored in SOURCE-MAP."
-  (flet ((install-special-sharpdot-reader (*readtable*)
-	   (let ((old-reader (ignore-errors
-			       (get-dispatch-macro-character #\# #\.))))
-	     (when old-reader
-	       (set-dispatch-macro-character #\# #\.
-		 (make-sharpdot-reader old-reader))))))
-    (let* ((tab (copy-readtable readtable))
-	   (*readtable* tab))
-      (dotimes (code 128)
-	(let ((char (code-char code)))
-	  (multiple-value-bind (fn term) (get-macro-character char tab)
-	    (when fn
-	      (set-macro-character char (make-source-recorder fn source-map) 
-				   term tab)))))
-      (install-special-sharpdot-reader tab)
-      tab)))
+  (flet ((install-special-sharpdot-reader (rt)
+	   (let ((fun (ignore-errors
+			(get-dispatch-macro-character #\# #\. rt))))
+	     (when fun
+	       (let ((wrapper (make-sharpdot-reader fun)))
+		 (set-dispatch-macro-character #\# #\. wrapper rt)))))
+	 (install-wrappers (rt)
+	   (dotimes (code 128)
+	     (let ((char (code-char code)))
+	       (multiple-value-bind (fun nt) (get-macro-character char rt)
+		 (when fun
+		   (let ((wrapper (make-source-recorder fun source-map)))
+		     (set-macro-character char wrapper nt rt))))))))
+    (let ((rt (copy-readtable readtable)))
+      (install-special-sharpdot-reader rt)
+      (install-wrappers rt)
+      rt)))
 
+;; FIXME: try to do this with *READ-SUPPRESS* = t to avoid interning.
+;; Should be possible as we only need the right "list structure" and
+;; not the right atoms.
 (defun read-and-record-source-map (stream)
   "Read the next object from STREAM.
 Return the object together with a hashtable that maps
 subexpressions of the object to stream positions."
   (let* ((source-map (make-hash-table :test #'eq))
          (*readtable* (make-source-recording-readtable *readtable* source-map))
+	 (*read-suppress* nil)
 	 (start (file-position stream))
 	 (form (ignore-errors (read stream)))
 	 (end (file-position stream)))
@@ -88,18 +117,68 @@ subexpressions of the object to stream positions."
       (push (cons start end) (gethash form source-map)))
     (values form source-map)))
 
+(defun starts-with-p (string prefix)
+  (declare (type string string prefix))
+  (not (mismatch string prefix
+		 :end1 (min (length string) (length prefix))
+		 :test #'char-equal)))
+
+(defun extract-package (line)
+  (declare (type string line))
+  (let ((name (cadr (read-from-string line))))
+    (find-package name)))
+
+#+(or)
+(progn
+  (assert (extract-package "(in-package cl)"))
+  (assert (extract-package "(cl:in-package cl)"))
+  (assert (extract-package "(in-package \"CL\")"))
+  (assert (extract-package "(in-package #:cl)")))
+
+;; FIXME: do something cleaner than this.
+(defun readtable-for-package (package)
+  ;; KLUDGE: due to the load order we can't reference the swank
+  ;; package.
+  (funcall (read-from-string "swank::guess-buffer-readtable")
+           (string-upcase (package-name package))))
+
+;; Search STREAM for a "(in-package ...)" form.  Use that to derive
+;; the values for *PACKAGE* and *READTABLE*.
+;;
+;; IDEA: move GUESS-READER-STATE to swank.lisp so that all backends
+;; use the same heuristic and to avoid the need to access
+;; swank::guess-buffer-readtable from here.
+(defun guess-reader-state (stream)
+  (let* ((point (file-position stream))
+	 (pkg *package*))
+    (file-position stream 0)
+    (loop for line = (read-line stream nil nil) do
+	  (when (not line) (return))
+	  (when (or (starts-with-p line "(in-package ")
+		    (starts-with-p line "(cl:in-package "))
+	    (let ((p (extract-package line)))
+	      (when p (setf pkg p)))
+	    (return)))
+    (file-position stream point)
+    (values (readtable-for-package pkg) pkg)))
+
+(defun skip-whitespace (stream)
+  (peek-char t stream nil nil))
+
+;; Skip over N toplevel forms.
 (defun skip-toplevel-forms (n stream)
   (let ((*read-suppress* t))
     (dotimes (i n)
-      (read stream))))
+      (read stream))
+    (skip-whitespace stream)))
 
 (defun read-source-form (n stream)
   "Read the Nth toplevel form number with source location recording.
 Return the form and the source-map."
-  (skip-toplevel-forms n stream)
-  (let ((*read-suppress* nil))
+  (multiple-value-bind (*readtable* *package*) (guess-reader-state stream)
+    (skip-toplevel-forms n stream)
     (read-and-record-source-map stream)))
-  
+
 (defun source-path-stream-position (path stream)
   "Search the source-path PATH in STREAM and return its position."
   (check-source-path path)
@@ -141,9 +220,7 @@ of the deepest (i.e. smallest) possible form is returned."
 		     for f = form then (nth n f)
 		     collect f)))
     ;; select the first subform present in source-map
-    (loop for form in (reverse forms)
-	  for positions = (gethash form source-map)
-	  until (and positions (null (cdr positions)))
-	  finally (destructuring-bind ((start . end)) positions
-		    (return (values start end))))))
-
+    (loop for form in (nreverse forms)
+	  for ((start . end) . rest) = (gethash form source-map)
+	  when (and start end (not rest))
+	  return (return (values start end)))))

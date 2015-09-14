@@ -113,10 +113,7 @@
        (unless (eq t fun)
          (append
           `("Type-specifier lambda-list: "
-            ,(inspector-princ
-              (if (eq :primitive kind)
-                  (arglist fun)
-                  (sb-int:info :type :lambda-list symbol)))
+            ,(inspector-princ (arglist fun))
             (:newline))
           (multiple-value-bind (expansion ok)
               (handler-case (sb-ext:typexpand-1 symbol)
@@ -157,7 +154,12 @@
             (typecase spec
               (swank-mop:eql-specializer
                `(eql ,(swank-mop:eql-specializer-object spec)))
-              (t (swank-mop:class-name spec))))
+              #-sbcl (t
+               (swank-mop:class-name spec))
+              #+sbcl (t
+                      (sb-pcl:unparse-specializer-using-class
+                       (sb-mop:method-generic-function method)
+                       spec))))
           (swank-mop:method-specializers method)))
 
 (defun method-for-inspect-value (method)
@@ -186,7 +188,7 @@ See `methods-by-applicability'.")
   (let ((s1 specializer1) (s2 specializer2) )
     (cond ((typep s1 'swank-mop:eql-specializer)
            (not (typep s2 'swank-mop:eql-specializer)))
-          (t
+          ((typep s1 'class)
            (flet ((cpl (class)
                     (and (swank-mop:class-finalized-p class)
                          (swank-mop:class-precedence-list class))))
@@ -848,23 +850,24 @@ SPECIAL-OPERATOR groups."
           (label-value-line "Truename" (truename pathname)))))
 
 (defmethod emacs-inspect ((pathname logical-pathname))
-          (append
-           (label-value-line*
-            ("Namestring" (namestring pathname))
-            ("Physical pathname: " (translate-logical-pathname pathname)))
-           `("Host: "
-             ,(pathname-host pathname)
-             " (" (:value ,(logical-pathname-translations
-                            (pathname-host pathname)))
-             "other translations)"
-             (:newline))
-           (label-value-line*
-            ("Directory" (pathname-directory pathname))
-            ("Name" (pathname-name pathname))
-            ("Type" (pathname-type pathname))
-            ("Version" (pathname-version pathname))
-            ("Truename" (if (not (wild-pathname-p pathname))
-                            (probe-file pathname))))))
+  (append
+   (label-value-line*
+    ("Namestring" (namestring pathname))
+    ("Physical pathname: " (translate-logical-pathname pathname)))
+   `("Host: "
+     (:value ,(pathname-host pathname))
+     " ("
+     (:value ,(logical-pathname-translations
+               (pathname-host pathname)))
+     " other translations)"
+     (:newline))
+   (label-value-line*
+    ("Directory" (pathname-directory pathname))
+    ("Name" (pathname-name pathname))
+    ("Type" (pathname-type pathname))
+    ("Version" (pathname-version pathname))
+    ("Truename" (if (not (wild-pathname-p pathname))
+                    (probe-file pathname))))))
 
 (defmethod emacs-inspect ((n number))
   `("Value: " ,(princ-to-string n)))

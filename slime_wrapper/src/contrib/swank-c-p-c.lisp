@@ -163,7 +163,8 @@ Return these values:
 INPUT is used to guess the preferred case."
   (ecase (readtable-case *readtable*)
     (:upcase (cond ((or with-escaping-p
-                        (not (some #'lower-case-p input)))
+                        (and (plusp (length input))
+                             (not (some #'lower-case-p input))))
                     #'identity)
                    (t #'string-downcase)))
     (:invert (lambda (output)
@@ -173,7 +174,8 @@ INPUT is used to guess the preferred case."
                        (upper (string-downcase output))
                        (t output)))))
     (:downcase (cond ((or with-escaping-p
-                          (not (some #'upper-case-p input)))
+                          (and (zerop (length input))
+                               (not (some #'upper-case-p input))))
                       #'identity)
                      (t #'string-upcase)))
     (:preserve #'identity)))
@@ -234,8 +236,8 @@ DELIMITER may be a character, or a list of characters."
 			         delimiter))))
     (lambda (prefix target)
       (declare (type simple-string prefix target))
-      (loop for ch across prefix
-	    with tpos = 0
+      (loop with tpos = 0
+	    for ch across prefix
 	    always (and (< tpos (length target))
 			(let ((delimiter (car (member ch delimiters :test test))))
 			  (if delimiter

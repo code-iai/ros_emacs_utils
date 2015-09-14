@@ -10,95 +10,109 @@
 ;;; separately for each Lisp. Each is declared as a generic function
 ;;; for which swank-<implementation>.lisp provides methods.
 
-(defpackage :swank-backend
-  (:use :common-lisp)
-  (:export #:*debug-swank-backend*
-           #:sldb-condition
-           #:compiler-condition
-           #:original-condition
-           #:message
-           #:source-context
-           #:condition
-           #:severity
-           #:with-compilation-hooks
-           #:location
-           #:location-p
-           #:location-buffer
-           #:location-position
-           #:position-p
-           #:position-pos
-           #:print-output-to-string
-           #:quit-lisp
-           #:references
-           #:unbound-slot-filler
-           #:declaration-arglist
-           #:type-specifier-arglist
-           #:with-struct
-           #:when-let
+(defpackage swank/backend
+  (:use cl)
+  (:nicknames swank-backend)
+  (:export *debug-swank-backend*
+           sldb-condition
+           compiler-condition
+           original-condition
+           message
+           source-context
+           condition
+           severity
+           with-compilation-hooks
+           make-location
+           location
+           location-p
+           location-buffer
+           location-position
+	   location-hints
+           position-p
+           position-pos
+           print-output-to-string
+           quit-lisp
+           references
+           unbound-slot-filler
+           declaration-arglist
+           type-specifier-arglist
+           with-struct
+           when-let
+	   defimplementation
+	   converting-errors-to-error-location
+	   make-error-location
+	   deinit-log-output
            ;; interrupt macro for the backend
-           #:*pending-slime-interrupts*
-           #:check-slime-interrupts
-           #:*interrupt-queued-handler*
+           *pending-slime-interrupts*
+           check-slime-interrupts
+           *interrupt-queued-handler*
            ;; inspector related symbols
-           #:emacs-inspect
-           #:label-value-line
-           #:label-value-line*
-           #:with-symbol))
+           emacs-inspect
+           label-value-line
+           label-value-line*
+           with-symbol
+           ;; package helper for backend
+           import-to-swank-mop
+           import-swank-mop-symbols
+	   ;;
 
-(defpackage :swank-mop
+           ))
+
+;; FIXME: rename to sawnk/mop
+(defpackage swank-mop
   (:use)
   (:export
    ;; classes
-   #:standard-generic-function
-   #:standard-slot-definition
-   #:standard-method
-   #:standard-class
-   #:eql-specializer
-   #:eql-specializer-object
+   standard-generic-function
+   standard-slot-definition
+   standard-method
+   standard-class
+   eql-specializer
+   eql-specializer-object
    ;; standard-class readers
-   #:class-default-initargs
-   #:class-direct-default-initargs
-   #:class-direct-slots
-   #:class-direct-subclasses
-   #:class-direct-superclasses
-   #:class-finalized-p
-   #:class-name
-   #:class-precedence-list
-   #:class-prototype
-   #:class-slots
-   #:specializer-direct-methods
+   class-default-initargs
+   class-direct-default-initargs
+   class-direct-slots
+   class-direct-subclasses
+   class-direct-superclasses
+   class-finalized-p
+   class-name
+   class-precedence-list
+   class-prototype
+   class-slots
+   specializer-direct-methods
    ;; generic function readers
-   #:generic-function-argument-precedence-order
-   #:generic-function-declarations
-   #:generic-function-lambda-list
-   #:generic-function-methods
-   #:generic-function-method-class
-   #:generic-function-method-combination
-   #:generic-function-name
+   generic-function-argument-precedence-order
+   generic-function-declarations
+   generic-function-lambda-list
+   generic-function-methods
+   generic-function-method-class
+   generic-function-method-combination
+   generic-function-name
    ;; method readers
-   #:method-generic-function
-   #:method-function
-   #:method-lambda-list
-   #:method-specializers
-   #:method-qualifiers
+   method-generic-function
+   method-function
+   method-lambda-list
+   method-specializers
+   method-qualifiers
    ;; slot readers
-   #:slot-definition-allocation
-   #:slot-definition-documentation
-   #:slot-definition-initargs
-   #:slot-definition-initform
-   #:slot-definition-initfunction
-   #:slot-definition-name
-   #:slot-definition-type
-   #:slot-definition-readers
-   #:slot-definition-writers
-   #:slot-boundp-using-class
-   #:slot-value-using-class
-   #:slot-makunbound-using-class
+   slot-definition-allocation
+   slot-definition-documentation
+   slot-definition-initargs
+   slot-definition-initform
+   slot-definition-initfunction
+   slot-definition-name
+   slot-definition-type
+   slot-definition-readers
+   slot-definition-writers
+   slot-boundp-using-class
+   slot-value-using-class
+   slot-makunbound-using-class
    ;; generic function protocol
-   #:compute-applicable-methods-using-classes
-   #:finalize-inheritance))
+   compute-applicable-methods-using-classes
+   finalize-inheritance))
 
-(in-package :swank-backend)
+(in-package swank/backend)
 
 
 ;;;; Metacode
@@ -161,7 +175,7 @@ Backends implement these functions using DEFIMPLEMENTATION."
             `(pushnew ',name *unimplemented-interfaces*)
             (gen-default-impl))
        (eval-when (:compile-toplevel :load-toplevel :execute)
-         (export ',name :swank-backend))
+         (export ',name :swank/backend))
        ',name)))
 
 (defmacro defimplementation (name args &body body)
@@ -203,36 +217,11 @@ EXCEPT is a list of symbol names which should be ignored."
         (import real-symbol :swank-mop)
         (export real-symbol :swank-mop)))))
 
-(defvar *gray-stream-symbols*
-  '(:fundamental-character-output-stream
-    :stream-write-char
-    :stream-write-string
-    :stream-fresh-line
-    :stream-force-output
-    :stream-finish-output
-    :fundamental-character-input-stream
-    :stream-read-char
-    :stream-peek-char
-    :stream-read-line
-    ;; STREAM-FILE-POSITION is not available on all implementations, or
-    ;; partially under a different name.
-    ; :stream-file-posiion
-    :stream-listen
-    :stream-unread-char
-    :stream-clear-input
-    :stream-line-column
-    :stream-read-char-no-hang
-    ;; STREAM-LINE-LENGTH is an extension to gray streams that's apparently
-    ;; supported by CMUCL, OpenMCL, SBCL and SCL.
-    #+(or cmu openmcl sbcl scl)
-    :stream-line-length))
-
-(defun import-from (package symbol-names &optional (to-package *package*))
-  "Import the list of SYMBOL-NAMES found in the package PACKAGE."
-  (dolist (name symbol-names)
-    (multiple-value-bind (symbol found) (find-symbol (string name) package)
-      (assert found () "Symbol ~A not found in package ~A" name package)
-      (import symbol to-package))))
+(definterface gray-package-name ()
+  "Return a package-name that contains the Gray stream symbols.
+This will be used like so:
+  (defpackage foo
+    (:import-from #.(gray-package-name) . #.*gray-stream-symbols*)")
 
 
 ;;;; Utilities
@@ -374,22 +363,26 @@ EXCEPT is a list of symbol names which should be ignored."
                               #b10111111)))
           (+ ,start ,n))))
 
+(defun %utf8-encode (code buffer start end)
+  (declare (type (unsigned-byte 31) code) (type octets buffer)
+           (type (and fixnum unsigned-byte) start end))
+  (cond ((<= code #x7f)
+         (cond ((< start end)
+                (setf (aref buffer start) code)
+                (1+ start))
+               (t start)))
+        ((<= code #x7ff) (utf8-encode-aux code buffer start end 2))
+        ((<= #xd800 code #xdfff)
+         (error "Invalid Unicode code point (surrogate): #x~x" code))
+        ((<= code #xffff) (utf8-encode-aux code buffer start end 3))
+        ((<= code #x1fffff) (utf8-encode-aux code buffer start end 4))
+        ((<= code #x3ffffff) (utf8-encode-aux code buffer start end 5))
+        (t (utf8-encode-aux code buffer start end 6))))
+
 (defun utf8-encode (char buffer start end)
-  (declare (character char) (type octets buffer) (fixnum start end))
-  (let ((code (char-code char)))
-    (cond ((<= code #x7f)
-           (cond ((< start end)
-                  (setf (aref buffer start) code)
-                  (1+ start))
-                 (t start)))
-          ((<= code #x7ff) (utf8-encode-aux code buffer start end 2))
-          ((<= #xd800 code #xdfff)
-           (error "Invalid Unicode code point (surrogate): #x~x" code))
-          ((<= code #xffff) (utf8-encode-aux code buffer start end 3))
-          ((<= code #x1fffff) (utf8-encode-aux code buffer start end 4))
-          ((<= code #x3ffffff) (utf8-encode-aux code buffer start end 5))
-          ((<= code #x7fffffff) (utf8-encode-aux code buffer start end 6))
-          (t (error "Can't encode ~s (~x)" char code)))))
+  (declare (type character char) (type octets buffer)
+           (type (and fixnum unsigned-byte) start end))
+  (%utf8-encode (char-code char) buffer start end))
 
 (defun utf8-encode-into (string start end buffer index limit)
   (declare (string string) (type octets buffer) (fixnum start end index limit))
@@ -430,16 +423,6 @@ EXCEPT is a list of symbol names which should be ignored."
 (definterface utf8-to-string (octets)
   "Convert the (simple-array (unsigned-byte 8)) OCTETS to a string."
   (default-utf8-to-string octets))
-
-;;; Codepoint length
-
-;; we don't need this anymore.
-(definterface codepoint-length (string)
-  "Return the number of codepoints in STRING.
-With some Lisps, like cmucl, LENGTH returns the number of UTF-16 code
-units, but other Lisps return the number of codepoints. The slime
-protocol wants string lengths in terms of codepoints."
-  (length string))
 
 
 ;;;; TCP server

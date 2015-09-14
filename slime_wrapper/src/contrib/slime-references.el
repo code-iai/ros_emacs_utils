@@ -132,15 +132,17 @@ See SWANK-BACKEND:CONDITION-REFERENCES for the datatype."
 (defun slime-tree-print-with-references (tree)
   ;; for SBCL-style references
   (slime-tree-default-printer tree)
-  (when-let (note (plist-get (slime-tree.plist tree) 'note))
-    (when-let (references (slime-note.references note))
-      (terpri (current-buffer))
-      (slime-insert-references references))))
+  (let ((note (plist-get (slime-tree.plist tree) 'note)))
+    (when note
+      (let ((references (slime-note.references note)))
+	(when references
+	  (terpri (current-buffer))
+	  (slime-insert-references references))))))
 
 ;;;;; Hook into SLDB
 
 (defun sldb-maybe-insert-references (extra)
-  (destructure-case extra
+  (slime-dcase extra
     ((:references references) (slime-insert-references references) t)
     (t nil)))
 

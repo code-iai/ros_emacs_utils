@@ -1,6 +1,6 @@
 ;;; -*- indent-tabs-mode: nil -*-
 ;;;
-;;; swank-lispworks.lisp --- LispWorks specific code for SLIME. 
+;;; swank-lispworks.lisp --- LispWorks specific code for SLIME.
 ;;;
 ;;; Created 2003, Helmut Eller
 ;;;
@@ -8,11 +8,16 @@
 ;;; are disclaimed.
 ;;;
 
-(in-package :swank-backend)
+(defpackage swank/lispworks
+  (:use cl swank/backend))
+
+(in-package swank/lispworks)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (require "comm")
-  (import-from :stream *gray-stream-symbols* :swank-backend))
+  (require "comm"))
+
+(defimplementation gray-package-name ()
+  "STREAM")
 
 (import-swank-mop-symbols :clos '(:slot-definition-documentation
                                   :slot-boundp-using-class
