@@ -1,6 +1,6 @@
 <package>
   <name>roslisp_repl</name>
-  <version>0.4.7</version>
+  <version>0.4.8</version>
   <description>
     This package provides a script that launches Emacs with Slime (the
     Superior Lisp Interaction Mode) ready for Lisp development and
