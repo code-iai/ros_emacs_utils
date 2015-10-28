@@ -3,7 +3,7 @@
 grammar {
   start = launch
   launch = element launch { master? & node* & param* & inc* & group* & rosparam* & env* & arg* & remap* }
-  group = element group { attribute ns { text }? & attribute if { text }? & attribute unless { text } &
+  group = element group { attribute ns { text }? & attribute if { text }? & attribute unless { text }? &
                          ( node* & param* & inc* ) }
   master = element master { attribute auto { text } }
   node = element node {
