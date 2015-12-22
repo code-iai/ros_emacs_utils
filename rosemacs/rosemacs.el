@@ -1720,6 +1720,7 @@ The page delimiter in this buffer matches the start, so you can use forward/back
   (require 'rng-loc)
   (cl-pushnew (concat rosemacs/pathname "/rng-schemas.xml") rng-schema-locating-files)
   (add-to-list 'auto-mode-alist '("\.launch$" . nxml-mode))
+  (add-to-list 'auto-mode-alist '("\.test$" . nxml-mode))
   (add-to-list 'auto-mode-alist '("manifest.xml" . nxml-mode))
   (add-to-list 'auto-mode-alist '("\\.urdf" . xml-mode))
   (add-to-list 'auto-mode-alist '("\\.xacro" . xml-mode))

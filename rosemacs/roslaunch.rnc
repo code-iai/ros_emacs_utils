@@ -2,7 +2,7 @@
 # Incomplete
 grammar {
   start = launch
-  launch = element launch { master? & node* & param* & inc* & group* & rosparam* & env* & arg* & remap* }
+  launch = element launch { master? & node* & param* & inc* & group* & rosparam* & env* & arg* & remap* & test* }
   group = element group { attribute ns { text }? & attribute if { text }? & attribute unless { text }? &
                          ( node* & param* & inc* ) }
   master = element master { attribute auto { text } }
@@ -52,4 +52,17 @@ grammar {
           ( arg* )
           
         }
+  test = element test {
+           attribute test-name { text } &
+           attribute pkg { text } &
+           attribute type { text } &
+           attribute name { text }? &
+           attribute args { text }? &
+           attribute ns { text }? &
+           attribute cwd { text }? &
+           attribute launch-prefix { text }? &
+           attribute retry { text }? &
+           attribute time-limit { text }? &
+           ( param* & remap* & rosparam* & group* & env* )
+         }
 }
