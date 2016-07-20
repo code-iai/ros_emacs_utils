@@ -34,6 +34,10 @@ where ```DISTRO``` is the name of your ROS distribution, e.g. ```indigo```.
 
 ## Common Lisp programmer
 
+Currently, we are using an alternative branch of slime, which has not been merged into master yet. The version we use is distributed with the ROS Debian packages. Unfortunately, that means that our ROS Debian package of slime (`ros-indigo-slime-wrapper`) and official Debian of slime (`slime`) can collide.
+
+**It is strongly recommended to only use the ROS Debian package of `slime`, i.e.: `sudo apt-get purge slime` if you installed one before.**
+
 ### For users
 
 If you work with roslisp, all you need to do is to start ```roslisp_repl``` in the terminal.
