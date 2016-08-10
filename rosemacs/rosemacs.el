@@ -1364,6 +1364,15 @@ else if not published yet, return the number -1, else return nil"
   (string-match "\\([^\/]+\\)$" path)
   (match-string 1 path))
 
+
+(defun ros-find-launch-files (pkg)
+  (let ((path (ros-package-path pkg)))
+    (save-excursion
+      (with-temp-buffer
+        (call-process "find" nil t nil path "-name" "*.launch")
+        (let ((launch-files-with-path (split-string (buffer-string) "\n")))
+          (mapcar 'file-name-nondirectory launch-files-with-path))))))
+
 (defun ros-find-executables (pkg)
   (let ((ros-run-exec-paths nil)
         (path (ros-package-path pkg)))
@@ -1378,6 +1387,13 @@ else if not published yet, return the number -1, else return nil"
                  (push str ros-run-exec-paths))
              (return))))))
     (cl-sort (cl-map 'vector 'extract-exec-name ros-run-exec-paths) 'string<)))
+
+(defun ros-package-file-full-path (pkg file)
+  (let ((path (ros-package-path pkg)))
+    (save-excursion
+      (with-temp-buffer
+        (call-process "find" nil t nil path "-name" file)
+        (car (split-string (buffer-string) "\n"))))))
 
 (defun ros-package-path (pkg)
   (save-excursion
@@ -1525,37 +1541,54 @@ With prefix arg, allows editing rosmake command before starting."
 (defvar ros-launch-args nil "The arguments to roslaunch")
 (make-variable-buffer-local 'ros-launch-args)
 
-(defun ros-launch (package-name &optional other-window edit-command)
+(defun ros-launch (package-name launch-file &optional other-window edit-command)
   "Launch a ros launch file in a separate buffer.  See ros-launch-mode for details."
-  (interactive (list (ros-completing-read-pkg-file "Enter ros path: ") nil current-prefix-arg))
-  (cl-multiple-value-bind (package dir-prefix dir-suffix) (parse-ros-file-prefix package-name)
-    (let* ((package-dir (ros-package-dir package))
-           (path (if dir-prefix (concat package-dir dir-prefix dir-suffix) package-dir)))
-      (if path
-          (let ((name (format "roslaunch:%s/%s" package dir-suffix)))
-            (if (rosemacs/contains-running-process name)
-                (warn "Roslaunch buffer %s already exists: not creating a new one." name)
-              (let* ((default-roslaunch-command (format "roslaunch %s %s" package dir-suffix))
-                     (roslaunch-command
-                      (split-string
-                       (if edit-command
-                           (read-string "Enter roslaunch command: " default-roslaunch-command
-                                        'roslaunch/history-list default-roslaunch-command)
-                         default-roslaunch-command))))
-                (let ((buf (get-buffer-create name)))
-                  (save-excursion
-                    (set-buffer buf)
-                    (comint-mode)
-                    (setq ros-launch-cmd (car roslaunch-command)
-                          ros-launch-args (cdr roslaunch-command))
-                    (message "cmd is %s and args are %s" ros-launch-cmd ros-launch-args)
-                    (setq ros-launch-path path)
-                    (setq ros-launch-filename dir-suffix)
-                    (ros-launch-mode 1)
-                    (rosemacs/relaunch (current-buffer)))
-                  (if other-window (display-buffer buf) (switch-to-buffer buf))
-                  buf))))
-        (error "Did not find %s in the ros package list." package-name)))))
+  ;; Initial argument parsing
+  (interactive
+   ;; First read package name with completion
+   (let ((pkg (ros-completing-read-package nil (get-buffer-ros-package))))
+     (list pkg
+           ;; Read launch file within this package, with completion
+           (funcall ros-completion-function "Enter launch file: "
+                    (ros-find-launch-files pkg) nil nil nil nil nil)
+
+           ;; No other-window, and edit-command is t iff prefix given
+           nil current-prefix-arg))) 
+
+  ;; Buffer name for this launch
+  (let ((name (format "roslaunch:%s/%s" package-name launch-file)))
+    (if (rosemacs/contains-running-process name)
+        (warn "Roslaunch buffer %s already exists: not creating a new one." name)
+
+      (let* ((default-roslaunch-command (format "roslaunch %s %s" package-name launch-file))
+
+             ;; Possibly allow user to enter arguments
+             (roslaunch-command
+              (split-string
+               (if edit-command
+                   (read-string "Enter roslaunch command: " default-roslaunch-command
+                                'roslaunch/history-list default-roslaunch-command)
+                 default-roslaunch-command))))
+
+        ;; Create the buffer if necessary
+        (let ((buf (get-buffer-create name)))
+          (save-excursion
+
+            ;; Set a bunch of buffer-local variables used in ros-launch-mode
+            (set-buffer buf)
+            (comint-mode)
+            (setq ros-launch-cmd (car roslaunch-command)
+                  ros-launch-args (cdr roslaunch-command))
+            (message "cmd is %s and args are %s" ros-launch-cmd ros-launch-args)
+            (setq ros-launch-path (ros-package-file-full-path package-name launch-file))
+            (setq ros-launch-filename launch-file)
+            (ros-launch-mode 1)
+
+            ;; Actually do the launch
+            (rosemacs/relaunch (current-buffer)))
+          
+          (if other-window (display-buffer buf) (switch-to-buffer buf))
+          buf)))))
 
 (defun ros-launch-current ()
   (interactive)
