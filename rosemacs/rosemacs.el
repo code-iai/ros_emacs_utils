@@ -337,7 +337,7 @@
     (catch 'done
       (while (and path (not (equal path "/")))
         (let ((files (directory-files path)))
-          (if (member "manifest.xml" files)
+          (if (or (member "manifest.xml" files) (member "package.xml" files))
               (throw 'done (file-name-nondirectory path))
             (setf path (directory-file-name (file-name-directory path)))))))))
 
