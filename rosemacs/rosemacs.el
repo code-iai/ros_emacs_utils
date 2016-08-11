@@ -162,6 +162,11 @@
 (defvar rosemacs/nodes-vec (vector) "Vector of nodes")
 
 (defvar roslaunch/history-list nil)
+(defvar roslaunch/package-history-list nil
+  "History of packages used in roslaunch")
+(defvar roslaunch/launchfile-history-lists (make-hash-table :test 'equal)
+  "Map each ros package name to the corresponding history list of launch files")
+(defvar roslaunch/launchfile-history-list nil)
 (defvar rosrun/history-list nil)
 
 (defvar ros-buffer-package nil
@@ -434,7 +439,8 @@
       (skip-syntax-backward " "))))
 
 
-(defun ros-completing-read-package (&optional prompt default completion-function)
+(defun ros-completing-read-package (&optional prompt default completion-function
+                                              history-list)
   (unless ros-packages
     (ros-load-package-locations))
   (let ((completion-function (or completion-function ros-completion-function))
@@ -444,7 +450,7 @@
                           ": "))))
     (funcall completion-function
              prompt (cl-map 'list #'identity ros-packages)
-             nil nil nil nil default)))
+             nil nil nil history-list default)))
 
 (defun ros-completing-read-pkg-file (prompt &optional default-pkg)
   (if (eq ros-completion-function 'ido-completing-read)
@@ -1532,6 +1538,8 @@ With prefix arg, allows editing rosmake command before starting."
 ;; roslaunch
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; A bunch of buffer-local variables that are set within a ros-launch buffer
+;; that contain info needed to start the launch process, jump to the file, etc.
 (defvar ros-launch-path nil "The path to the file being launched")
 (make-variable-buffer-local 'ros-launch-path)
 (defvar ros-launch-filename nil "The file being launched")
@@ -1546,11 +1554,25 @@ With prefix arg, allows editing rosmake command before starting."
   ;; Initial argument parsing
   (interactive
    ;; First read package name with completion
-   (let ((pkg (ros-completing-read-package nil (get-buffer-ros-package))))
+   (let* ((pkg (ros-completing-read-package nil (get-buffer-ros-package)
+                                            nil 'roslaunch/package-history-list))
+
+          ;; We're going to have a separate history list per package for the
+          ;; launchfile name
+          (roslaunch/launchfile-history-list
+           (gethash pkg roslaunch/launchfile-history-lists nil))
+          )
+     
      (list pkg
            ;; Read launch file within this package, with completion
-           (funcall ros-completion-function "Enter launch file: "
-                    (ros-find-launch-files pkg) nil nil nil nil nil)
+           ;; Because of the way history lists work, we have to do this
+           ;; weird thing to save the updated list back out for next time
+           (prog1
+               (funcall ros-completion-function "Enter launch file: "
+                        (ros-find-launch-files pkg) nil nil nil 
+                        'roslaunch/launchfile-history-list nil)
+             (puthash pkg roslaunch/launchfile-history-list
+                      roslaunch/launchfile-history-lists))
 
            ;; No other-window, and edit-command is t iff prefix given
            nil current-prefix-arg))) 
@@ -1624,6 +1646,10 @@ With prefix arg, allows editing rosmake command before starting."
   (find-file ros-launch-path))
 
 (defun rosemacs/relaunch (buf)
+  "Common function used by the various roslaunch functions.  
+
+It assumes BUF is an existing buffer in which a bunch of buffer-local variables have already been
+set.  These variables contain all the information needed to actually do the launch."
   (let ((proc (get-buffer-process buf)))
     (if (and proc (eq (process-status proc) 'run))
         (warn "Can't relaunch since process %s is still running" proc)
