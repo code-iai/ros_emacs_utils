@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>ros_emacs_utils</name>
-  <version>0.4.9</version>
+  <version>0.4.10</version>
   <description>
     A metapackage of Emacs utils for ROS.
     Only there for simplifying the release process.

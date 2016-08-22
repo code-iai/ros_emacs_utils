@@ -1,6 +1,6 @@
 <package>
   <name>rosemacs</name>
-  <version>0.4.9</version>
+  <version>0.4.10</version>
   <description>ROS tools for those who live in Emacs.</description>
 
   <author>Bhaskara Marthi</author>
