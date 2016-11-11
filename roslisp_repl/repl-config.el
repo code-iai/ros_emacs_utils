@@ -11,8 +11,12 @@
 (autoload 'mwheel-install "mwheel" "Enable mouse wheel support.")
 ;; Enable copy-pasting between programs (Kill-ring <-> x11)
 (setq x-select-enable-clipboard t)
-(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
-
+(cond
+ ((fboundp 'x-cut-buffer-or-selection-value)
+  (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
+ ((fboundp 'x-selection-value) ;; emacs 24 or later
+  (setq interprogram-paste-function 'x-selection-value))
+ (t (setq x-select-enable-clipboard nil))) ;; no connection to X server
 
 ;;; Start slime
 ;; ``slime-config`` is located in the ``slime_ros`` package.
