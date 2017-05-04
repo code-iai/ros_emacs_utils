@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>slime_wrapper</name>
-  <version>0.4.10</version>
+  <version>0.4.11</version>
   <description>ROS wrapper for slime</description>
 
   <maintainer email="kazhoyan@cs.uni-bremen.de">Gayane Kazhoyan</maintainer>
