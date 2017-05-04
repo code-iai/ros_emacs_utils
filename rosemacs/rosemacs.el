@@ -1376,7 +1376,7 @@ else if not published yet, return the number -1, else return nil"
     (save-excursion
       (with-temp-buffer
         (call-process "find" nil t nil path "-name" "*.launch")
-        (let ((launch-files-with-path (split-string (buffer-string) "\n")))
+        (let ((launch-files-with-path (split-string (buffer-string) "\n" t)))
           (mapcar 'file-name-nondirectory launch-files-with-path))))))
 
 (defun ros-find-executables (pkg)
