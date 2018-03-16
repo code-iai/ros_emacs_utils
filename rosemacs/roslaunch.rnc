@@ -1,68 +1,110 @@
 # A RELAX NG schema for ros launch files
-# Incomplete
 grammar {
   start = launch
-  launch = element launch { master? & node* & param* & inc* & group* & rosparam* & env* & arg* & remap* & test* }
-  group = element group { attribute ns { text }? & attribute if { text }? & attribute unless { text }? &
-                         ( node* & param* & inc* ) }
-  master = element master { attribute auto { text } }
+  launch = element launch {
+           ( node* & param* & inc* & group* & rosparam* & env* & arg* & remap* & test* & machine* )
+         }
+  group = element group {
+           attribute ns { text }? &
+           attribute clear_params { "true" | "false" }? &
+           attribute if { text }? &
+           attribute unless { text }? &
+           ( node* & param* & inc* & group* & rosparam* & env* & arg* & remap* & test* & machine* )
+         }
   node = element node {
            attribute name { text } &
            attribute pkg { text } &
            attribute type { text } &
            attribute args { text }? &
-           attribute respawn { "true" | "false" }? &
            attribute machine { text }? &
-           attribute output { text }? &
+           attribute respawn { "true" | "false" }? &
+           attribute respawn_delay { text }? &
+           attribute required { text }? &
            attribute ns { text }? &
-           ( param* & remap* & rosparam* & group* )
+           attribute clear_params { "true" | "false" }? &
+           attribute output { "log" | "screen" }? &
+           attribute cwd { "ROS_HOME" | "node" }? &
+           attribute launch-prefix { text }? &
+           attribute if { text }? &
+           attribute unless { text }? &
+           ( env* & param* & remap* & rosparam* )
          }
   env = element env {
            attribute name { text } &
-           attribute value { text } 
-        }
+           attribute value { text } &
+           attribute if { text }? &
+           attribute unless { text }?
+         }
   param = element param {
-            attribute name { text } &
-            attribute value { text }? &
-            attribute command { text }? &
-            attribute if { text }? & 
-            attribute unless { text }? &
-            attribute type { text }? 
-          }
+           attribute name { text } &
+           attribute value { text }? &
+           attribute type { "str" | "int" | "double" | "bool" | "yaml" }? &
+           attribute textfile { text }? &
+           attribute binfile { text}? &
+           attribute command { text }? &
+           attribute if { text }? &
+           attribute unless { text }?
+         }
   arg = element arg {
-            attribute name { text } &
-            attribute value { text }? &
-            attribute default { text }?
-        }
+           attribute name { text } &
+           attribute default { text }? &
+           attribute value { text }? &
+           attribute doc { text }? &
+           attribute if { text }? &
+           attribute unless { text }?
+         }
   rosparam = element rosparam {
-               attribute command { text }? &
-               attribute file { text }? &
-               attribute ns { text }? &
-               attribute param { text }? &
-               attribute if { text }? & 
-               attribute unless { text }? &
-               ( text )
-             }
- 
-
-  remap = element remap { attribute from { text }, attribute to { text }, 
-                          attribute unless { text }*, attribute if { text }* }          
+           attribute command { text }? &
+           attribute file { text }? &
+           attribute param { text }? &
+           attribute ns { text }? &
+           attribute subst_value { "true" | "false" }? &
+           attribute if { text }? &
+           attribute unless { text }? &
+           ( text )
+         }
+  machine = element machine {
+           attribute if { text }? &
+           attribute unless { text }? &
+           attribute name { text } &
+           attribute address { text } &
+           attribute env-loader { text }* &
+           attribute default { "true" | "false" | "never" }? &
+           attribute user { text }? &
+           attribute password { text }? &
+           attribute timeout { text }? &
+           attribute if { text }? &
+           attribute unless { text }?
+         }
+  remap = element remap {
+           attribute from { text } &
+           attribute to { text } &
+           attribute if { text }? &
+           attribute unless { text }?
+         }
   inc = element include {
-          attribute file { text },
-          ( arg* )
-          
-        }
+           attribute file { text } &
+           attribute ns { text }? &
+           attribute clear_params { "true" | "false" }? &
+           attribute pass_all_args { "true" | "false" }? &
+           attribute if { text }? &
+           attribute unless { text }? &
+           ( env* & arg* )
+         }
   test = element test {
-           attribute test-name { text } &
            attribute pkg { text } &
+           attribute test-name { text } &
            attribute type { text } &
            attribute name { text }? &
            attribute args { text }? &
-           attribute ns { text }? &
+           attribute clear_params { "true" | "false" }? &
            attribute cwd { text }? &
            attribute launch-prefix { text }? &
+           attribute ns { text }? &
            attribute retry { text }? &
            attribute time-limit { text }? &
-           ( param* & remap* & rosparam* & group* & env* )
+           attribute if { text }? &
+           attribute unless { text }? &
+           ( param* & remap* & rosparam* & env* )
          }
 }
