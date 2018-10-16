@@ -23,11 +23,5 @@ configure_file(
 install(FILES slime-config.el sbclrc-ros
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
-install(FILES slime-ros.el
-  DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/emacs/site-lisp/slime/contrib)
-
-install(FILES swank-ros.asd swank-ros.lisp
-  DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/common-lisp/source)
-
 install(PROGRAMS slime_ros_init
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})

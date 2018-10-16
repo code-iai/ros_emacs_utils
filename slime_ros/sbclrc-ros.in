@@ -4,5 +4,3 @@
 (require 'asdf)
 (pushnew #p"${CMAKE_INSTALL_PREFIX}/share/common-lisp/source/"
          asdf:*central-registry* :test #'equal)
-(pushnew #p"${CMAKE_INSTALL_PREFIX}/share/common-lisp/source/slime/"
-         asdf:*central-registry* :test #'equal)
