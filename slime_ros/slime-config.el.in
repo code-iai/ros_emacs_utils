@@ -6,7 +6,7 @@
 (require 'rosemacs-config)
 
 (require 'slime-autoloads)
-(setq slime-backend "swank-loader.lisp")
+;; (setq slime-backend "swank-loader.lisp")
 (add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode 1)))
 
 ;; If you don't like the highlighting of new uncompiled code, uncomment this:
@@ -17,7 +17,7 @@
 
 (setq slime-contribs '(slime-repl
                        slime-autodoc
-                       ;; slime-c-p-c
+                       slime-c-p-c
                        slime-editing-commands
                        slime-fancy-inspector
                        slime-fancy-trace
@@ -28,7 +28,6 @@
                        slime-package-fu
                        slime-fontifying-fu
                        slime-trace-dialog
-                       ;;
                        slime-asdf
                        slime-indentation
                        slime-xref-browser
