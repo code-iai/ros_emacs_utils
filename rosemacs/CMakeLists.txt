@@ -31,4 +31,3 @@ foreach(subdir
   install(DIRECTORY snippets/${subdir}
     DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/emacs/site-lisp/snippets)
 endforeach()
-install(FILES yasnippet.el DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}/emacs/site-lisp)

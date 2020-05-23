@@ -18,6 +18,10 @@
   (setq interprogram-paste-function 'x-selection-value))
  (t (setq x-select-enable-clipboard nil))) ;; no connection to X server
 
+;; initialize ELPA packages
+;; this is useful, e.g., is someone installed yasnippet from ELPA
+(package-initialize)
+
 ;;; Start slime
 ;; ``slime-config`` is located in the ``slime_ros`` package.
 ;; It's path is passed to emacs through the -L argument of
