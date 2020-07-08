@@ -49,9 +49,7 @@
      (define-key slime-mode-map [tab]
        (lambda ()
          (interactive)
-         (let ((yas-fallback-behavior nil))
-           (unless (yas-expand)
-             (slime-fuzzy-indent-and-complete-symbol)))))
+         (slime-fuzzy-indent-and-complete-symbol)))
      (define-key slime-mode-map (kbd "M-a")
        (lambda ()
          (interactive)
