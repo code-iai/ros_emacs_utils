@@ -12,7 +12,7 @@
 ;; If you don't like the highlighting of new uncompiled code, uncomment this:
 ;; (add-hook 'slime-mode-hook (lambda () (slime-highlight-edits-mode 0)))
 
-(setq inferior-lisp-program "/usr/bin/sbcl")
+(setq inferior-lisp-program "/usr/bin/sbcl --dynamic-space-size 4096")
 (setq slime-lisp-implementations nil)
 
 (setq slime-contribs '(slime-repl
