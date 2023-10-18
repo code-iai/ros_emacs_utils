@@ -847,7 +847,7 @@ parameter."
   (let ((current-nodes nil))
     (while (re-search-forward "^\\/\\(.*\\)$" nil t)
       (when (> (match-end 0) finish)
-        (return))
+        (cl-return))
       (push (match-string 1) current-nodes))
     (let ((sorted-nodes (cl-sort current-nodes 'string<)))
       (cl-destructuring-bind (added deleted)
@@ -1392,7 +1392,7 @@ else if not published yet, return the number -1, else return nil"
            (if pos
                (let ((str (match-string 1)))
                  (push str ros-run-exec-paths))
-             (return)))))))
+             (cl-return)))))))
     (cl-sort (cl-map 'vector 'extract-exec-name ros-run-exec-paths) 'string<)))
 
 (defun ros-package-file-full-path (pkg file)
