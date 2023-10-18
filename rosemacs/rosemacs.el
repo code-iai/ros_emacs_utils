@@ -392,13 +392,13 @@
             (cl-subseq word (1+ index)))
       word)))
 
-(setq topic-completor (dynamic-completion-table
+(setq topic-completor (completion-table-dynamic
                        (lambda (str) (rosemacs-bsearch str ros-all-topics))))
-(setq node-completor (dynamic-completion-table
+(setq node-completor (completion-table-dynamic
                       (lambda (str) (rosemacs-bsearch str rosemacs/nodes-vec))))
 (setq ros-package-completor 
       ;; Longer because it has to deal with the case of PACKAGE/PATH-PREFIX in addition to PACKAGE-PREFIX
-      (dynamic-completion-table 
+      (completion-table-dynamic
        (lambda (str) 
          (unless ros-packages (ros-load-package-locations))
          (cl-multiple-value-bind (package dir-prefix dir-suffix) (parse-ros-file-prefix str)
