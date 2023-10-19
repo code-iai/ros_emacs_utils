@@ -392,13 +392,13 @@
             (cl-subseq word (1+ index)))
       word)))
 
-(setq topic-completor (dynamic-completion-table
+(setq topic-completor (completion-table-dynamic
                        (lambda (str) (rosemacs-bsearch str ros-all-topics))))
-(setq node-completor (dynamic-completion-table
+(setq node-completor (completion-table-dynamic
                       (lambda (str) (rosemacs-bsearch str rosemacs/nodes-vec))))
 (setq ros-package-completor 
       ;; Longer because it has to deal with the case of PACKAGE/PATH-PREFIX in addition to PACKAGE-PREFIX
-      (dynamic-completion-table 
+      (completion-table-dynamic
        (lambda (str) 
          (unless ros-packages (ros-load-package-locations))
          (cl-multiple-value-bind (package dir-prefix dir-suffix) (parse-ros-file-prefix str)
@@ -847,7 +847,7 @@ parameter."
   (let ((current-nodes nil))
     (while (re-search-forward "^\\/\\(.*\\)$" nil t)
       (when (> (match-end 0) finish)
-        (return))
+        (cl-return))
       (push (match-string 1) current-nodes))
     (let ((sorted-nodes (cl-sort current-nodes 'string<)))
       (cl-destructuring-bind (added deleted)
@@ -1392,7 +1392,7 @@ else if not published yet, return the number -1, else return nil"
            (if pos
                (let ((str (match-string 1)))
                  (push str ros-run-exec-paths))
-             (return)))))))
+             (cl-return)))))))
     (cl-sort (cl-map 'vector 'extract-exec-name ros-run-exec-paths) 'string<)))
 
 (defun ros-package-file-full-path (pkg file)
@@ -1625,10 +1625,10 @@ With prefix arg, allows editing rosmake command before starting."
 (defun ros-launch-current ()
   (interactive)
   (let ((path (buffer-file-name)))
-    (assert (and path (string-match ".*\\/\\([^\\/]*\.launch\\)" path)))
+    (cl-assert (and path (string-match ".*\\/\\([^\\/]*\.launch\\)" path)))
     (let* ((filename (match-string 1 path))
            (pkg (ros-package-for-path path)))
-      (assert (and pkg filename))
+      (cl-assert (and pkg filename))
       (let ((name (format "roslaunch:%s/%s" pkg filename)))
         (if (rosemacs/contains-running-process name)
             (switch-to-buffer (get-buffer name))
